@@ -34,7 +34,6 @@
             z-index: 1;
         }
 
-        /* تكبير الكارت الرئيسي */
         .main-card {
             position: relative;
             z-index: 2;
@@ -42,11 +41,11 @@
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 40px; /* زيادة الانحناء لشكل أفخم */
-            padding: 60px 40px; /* تكبير المسافات الداخلية */
+            border-radius: 40px; 
+            padding: 60px 40px; 
             text-align: center;
             box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-            max-width: 700px; /* تكبير العرض الأقصى */
+            max-width: 700px; 
             width: 92%;
             animation: fadeIn 2s ease-in-out;
         }
@@ -57,7 +56,7 @@
         }
 
         h1 {
-            font-size: 2.8rem; /* تكبير العنوان */
+            font-size: 2.8rem; 
             color: #FFD700;
             margin-bottom: 15px;
             text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
@@ -69,7 +68,6 @@
             opacity: 0.9;
         }
 
-        /* العداد المنظم والذكي */
         .timer-grid {
             display: flex;
             flex-wrap: wrap;
@@ -84,9 +82,9 @@
             border-radius: 20px;
             border: 1px solid rgba(255, 215, 0, 0.3);
             min-width: 90px;
-            flex: 1 1 100px; /* يجعل الصناديق تتوسع بمرونة */
+            flex: 1 1 100px; 
             transition: all 0.4s ease;
-            display: none; /* مخفي وسيظهر بواسطة JS */
+            display: none; 
         }
 
         .time-unit:hover {
@@ -126,8 +124,9 @@
 
         footer {
             margin-top: 35px;
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem; /* كبرت الخط شوية عشان الجملة تظهر */
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: bold;
         }
 
         .heart {
@@ -165,7 +164,7 @@
         </div>
 
         <footer>
-            بكل حب <span class="heart">❤</span> دائمًا وأبدًا
+            ربنا يكتبك ليا <span class="heart">❤</span>
         </footer>
     </div>
 
@@ -175,7 +174,6 @@
         function updateTimer() {
             const now = new Date();
             
-            // حساب السنين والشهور والأيام بدقة
             let years = now.getFullYear() - startDate.getFullYear();
             let months = now.getMonth() - startDate.getMonth();
             let days = now.getDate() - startDate.getDate();
@@ -190,13 +188,11 @@
                 months += 12;
             }
 
-            // حساب الساعات والدقائق والثواني
             const diffMs = now - startDate;
             const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
 
-            // دالة لإظهار الخانات الذكية
             renderUnit("unit-years", "years", years);
             renderUnit("unit-months", "months", months);
             renderUnit("unit-days", "days", days);
@@ -209,8 +205,6 @@
             const element = document.getElementById(elementId);
             const span = document.getElementById(spanId);
             
-            // تظهر الخانة فقط إذا كانت قيمتها أكبر من 0
-            // أو إذا كانت هناك خانة أكبر منها ظاهرة (عشان الترتيب)
             if (value > 0 || (elementId === 'unit-months' && document.getElementById('years').innerText > 0)) {
                 element.style.display = "block";
                 span.innerText = value;
