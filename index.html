@@ -3,118 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حكايتنا</title>
+    <title>أجمل حكاية | 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* تنسيق الشكل العام */
-        body, html {
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            height: 100%;
-            overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
-            text-align: center;
         }
 
-        /* فيديو الخلفية */
-        #bg-video {
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-            z-index: -1;
-            filter: brightness(0.6); /* تغميق الفيديو عشان الكلام يظهر */
-        }
-
-        /* محتوى الموقع */
-        .content {
-            position: relative;
-            z-index: 1;
+        body {
+            font-family: 'Cairo', sans-serif;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.3);
+            background: url('background.gif') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            overflow: hidden;
         }
 
-        h1 { font-size: 2.5rem; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        /* طبقة حماية جمالية */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);
+            z-index: 1;
+        }
 
-        /* العداد */
-        #timer {
-            font-size: 1.8rem;
+        /* الكارت الرئيسي للمحتوى */
+        .main-card {
+            position: relative;
+            z-index: 2;
             background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            max-width: 500px;
+            width: 90%;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #FFD700; /* ذهبي رمضاني */
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            letter-spacing: 1px;
+        }
+
+        /* العداد المنظم */
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
             margin-bottom: 30px;
         }
 
-        /* معرض الصور المصغر */
-        .photos {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .photos img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #fff;
+        .time-unit {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px 5px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
             transition: transform 0.3s;
         }
 
-        .photos img:hover { transform: scale(1.1); }
+        .time-unit:hover {
+            transform: scale(1.05);
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .number {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #FFD700;
+        }
+
+        .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        /* مشغل الموسيقى */
+        .music-player {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        audio {
+            height: 30px;
+            width: 220px;
+            filter: invert(1); /* عشان لونه يبقى ابيض يمشى مع الاستايل */
+        }
+
+        footer {
+            margin-top: 25px;
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .heart {
+            color: #ff4d4d;
+            display: inline-block;
+            animation: beat 1s infinite alternate;
+        }
+
+        @keyframes beat {
+            to { transform: scale(1.2); }
+        }
     </style>
 </head>
 <body>
 
-    <video autoplay muted loop id="bg-video">
-        <source src="ramadan_video.mp4" type="video/mp4">
-        المتصفح لا يدعم الفيديو.
-    </video>
+    <div class="overlay"></div>
 
-    <div class="content">
-        <h1>أجمل حكاية بدأت من يوم 7/11</h1>
-        
-        <div id="timer">جاري تحميل اللحظات...</div>
+    <div class="main-card">
+        <h1>🌙 حكايتنا بدأت</h1>
+        <p class="subtitle">منذ تلك اللحظة في 7 نوفمبر 2025</p>
 
-        <audio autoplay loop controls>
-            <source src="our_song.mp3" type="audio/mpeg">
-        </audio>
-
-        <div class="photos">
-            <img src="photo1.jpg" alt="ذكريات 1">
-            <img src="photo2.jpg" alt="ذكريات 2">
-            <img src="photo3.jpg" alt="ذكريات 3">
+        <div class="timer-grid">
+            <div class="time-unit">
+                <span class="number" id="days">0</span>
+                <span class="label">يوم</span>
+            </div>
+            <div class="time-unit">
+                <span class="number" id="hours">0</span>
+                <span class="label">ساعة</span>
+            </div>
+            <div class="time-unit">
+                <span class="number" id="minutes">0</span>
+                <span class="label">دقيقة</span>
+            </div>
+            <div class="time-unit">
+                <span class="number" id="seconds">0</span>
+                <span class="label">ثانية</span>
+            </div>
         </div>
+
+        <div class="music-player">
+            <audio controls autoplay loop>
+                <source src="music.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+
+        <footer>
+            بكل حب <span class="heart">❤</span> دائمًا وأبدًا
+        </footer>
     </div>
 
     <script>
-        // تاريخ البداية (7 نوفمبر 2025 الساعة 12:00 صباحاً)
         const startDate = new Date("November 7, 2025 00:00:00").getTime();
 
         function updateTimer() {
             const now = new Date().getTime();
             const diff = now - startDate;
 
-            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
-            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
-            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-            document.getElementById("timer").innerHTML = 
-                years + " سنة، " + months + " شهر، " + days + " يوم، " + 
-                hours + " ساعة، " + minutes + " دقيقة، " + seconds + " ثانية";
+            document.getElementById("days").innerText = d;
+            document.getElementById("hours").innerText = h;
+            document.getElementById("minutes").innerText = m;
+            document.getElementById("seconds").innerText = s;
         }
 
         setInterval(updateTimer, 1000);
+        updateTimer();
     </script>
 </body>
 </html>
