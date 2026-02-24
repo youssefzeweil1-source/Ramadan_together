@@ -24,7 +24,6 @@
             overflow: hidden;
         }
 
-        /* طبقة حماية جمالية */
         .overlay {
             position: absolute;
             top: 0;
@@ -35,7 +34,7 @@
             z-index: 1;
         }
 
-        /* الكارت الرئيسي للمحتوى */
+        /* تكبير الكارت الرئيسي */
         .main-card {
             position: relative;
             z-index: 2;
@@ -43,99 +42,102 @@
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 30px;
-            padding: 40px;
+            border-radius: 40px; /* زيادة الانحناء لشكل أفخم */
+            padding: 60px 40px; /* تكبير المسافات الداخلية */
             text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            max-width: 500px;
-            width: 90%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            max-width: 700px; /* تكبير العرض الأقصى */
+            width: 92%;
             animation: fadeIn 2s ease-in-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
-            font-size: 2.2rem;
-            color: #FFD700; /* ذهبي رمضاني */
-            margin-bottom: 10px;
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            font-size: 2.8rem; /* تكبير العنوان */
+            color: #FFD700;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
         }
 
         .subtitle {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
+            font-size: 1.3rem;
+            margin-bottom: 40px;
             opacity: 0.9;
-            letter-spacing: 1px;
         }
 
-        /* العداد المنظم */
+        /* العداد المنظم والذكي */
         .timer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            display: flex;
+            flex-wrap: wrap;
             gap: 15px;
-            margin-bottom: 30px;
+            justify-content: center;
+            margin-bottom: 40px;
         }
 
         .time-unit {
             background: rgba(0, 0, 0, 0.4);
-            padding: 15px 5px;
-            border-radius: 15px;
+            padding: 20px 10px;
+            border-radius: 20px;
             border: 1px solid rgba(255, 215, 0, 0.3);
-            transition: transform 0.3s;
+            min-width: 90px;
+            flex: 1 1 100px; /* يجعل الصناديق تتوسع بمرونة */
+            transition: all 0.4s ease;
+            display: none; /* مخفي وسيظهر بواسطة JS */
         }
 
         .time-unit:hover {
-            transform: scale(1.05);
-            background: rgba(255, 215, 0, 0.1);
+            transform: translateY(-5px);
+            background: rgba(255, 215, 0, 0.15);
+            border-color: #FFD700;
         }
 
         .number {
             display: block;
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             font-weight: 700;
             color: #FFD700;
         }
 
         .label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
+            font-size: 0.9rem;
             opacity: 0.8;
+            font-weight: 400;
         }
 
-        /* مشغل الموسيقى */
         .music-player {
             margin-top: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px;
-            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 25px;
+            border-radius: 60px;
             display: inline-flex;
             align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         audio {
-            height: 30px;
-            width: 220px;
-            filter: invert(1); /* عشان لونه يبقى ابيض يمشى مع الاستايل */
+            height: 35px;
+            width: 240px;
+            filter: invert(1);
         }
 
         footer {
-            margin-top: 25px;
-            font-size: 0.9rem;
-            font-style: italic;
-            color: rgba(255, 255, 255, 0.6);
+            margin-top: 35px;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .heart {
             color: #ff4d4d;
             display: inline-block;
-            animation: beat 1s infinite alternate;
+            animation: beat 0.8s infinite alternate;
         }
 
         @keyframes beat {
-            to { transform: scale(1.2); }
+            to { transform: scale(1.3); text-shadow: 0 0 10px #ff4d4d; }
         }
     </style>
 </head>
@@ -145,25 +147,15 @@
 
     <div class="main-card">
         <h1>🌙 حكايتنا بدأت</h1>
-        <p class="subtitle">منذ تلك اللحظة في 7 نوفمبر 2025</p>
+        <p class="subtitle">منذ اللحظة التي قالت فيها "أحبك"</p>
 
-        <div class="timer-grid">
-            <div class="time-unit">
-                <span class="number" id="days">0</span>
-                <span class="label">يوم</span>
-            </div>
-            <div class="time-unit">
-                <span class="number" id="hours">0</span>
-                <span class="label">ساعة</span>
-            </div>
-            <div class="time-unit">
-                <span class="number" id="minutes">0</span>
-                <span class="label">دقيقة</span>
-            </div>
-            <div class="time-unit">
-                <span class="number" id="seconds">0</span>
-                <span class="label">ثانية</span>
-            </div>
+        <div class="timer-grid" id="timerContainer">
+            <div class="time-unit" id="unit-years"><span class="number" id="years">0</span><span class="label">سنة</span></div>
+            <div class="time-unit" id="unit-months"><span class="number" id="months">0</span><span class="label">شهر</span></div>
+            <div class="time-unit" id="unit-days"><span class="number" id="days">0</span><span class="label">يوم</span></div>
+            <div class="time-unit" id="unit-hours"><span class="number" id="hours">0</span><span class="label">ساعة</span></div>
+            <div class="time-unit" id="unit-minutes"><span class="number" id="minutes">0</span><span class="label">دقيقة</span></div>
+            <div class="time-unit" id="unit-seconds" style="display: block;"><span class="number" id="seconds">0</span><span class="label">ثانية</span></div>
         </div>
 
         <div class="music-player">
@@ -178,21 +170,53 @@
     </div>
 
     <script>
-        const startDate = new Date("November 7, 2025 00:00:00").getTime();
+        const startDate = new Date("November 7, 2025 00:00:00");
 
         function updateTimer() {
-            const now = new Date().getTime();
-            const diff = now - startDate;
+            const now = new Date();
+            
+            // حساب السنين والشهور والأيام بدقة
+            let years = now.getFullYear() - startDate.getFullYear();
+            let months = now.getMonth() - startDate.getMonth();
+            let days = now.getDate() - startDate.getDate();
 
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            if (days < 0) {
+                months--;
+                let lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += lastMonth.getDate();
+            }
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
 
-            document.getElementById("days").innerText = d;
-            document.getElementById("hours").innerText = h;
-            document.getElementById("minutes").innerText = m;
-            document.getElementById("seconds").innerText = s;
+            // حساب الساعات والدقائق والثواني
+            const diffMs = now - startDate;
+            const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+            // دالة لإظهار الخانات الذكية
+            renderUnit("unit-years", "years", years);
+            renderUnit("unit-months", "months", months);
+            renderUnit("unit-days", "days", days);
+            renderUnit("unit-hours", "hours", hours);
+            renderUnit("unit-minutes", "minutes", minutes);
+            document.getElementById("seconds").innerText = seconds;
+        }
+
+        function renderUnit(elementId, spanId, value) {
+            const element = document.getElementById(elementId);
+            const span = document.getElementById(spanId);
+            
+            // تظهر الخانة فقط إذا كانت قيمتها أكبر من 0
+            // أو إذا كانت هناك خانة أكبر منها ظاهرة (عشان الترتيب)
+            if (value > 0 || (elementId === 'unit-months' && document.getElementById('years').innerText > 0)) {
+                element.style.display = "block";
+                span.innerText = value;
+            } else {
+                element.style.display = "none";
+            }
         }
 
         setInterval(updateTimer, 1000);
