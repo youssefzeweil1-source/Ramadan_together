@@ -124,7 +124,7 @@
 
         footer {
             margin-top: 35px;
-            font-size: 1.2rem; /* كبرت الخط شوية عشان الجملة تظهر */
+            font-size: 1.2rem;
             color: rgba(255, 255, 255, 0.9);
             font-weight: bold;
         }
@@ -146,7 +146,7 @@
 
     <div class="main-card">
         <h1>🌙 حكايتنا بدأت</h1>
-        <p class="subtitle"> 💖7/11/2025</p>
+        <p class="subtitle"> 💖 8/11/2025</p>
 
         <div class="timer-grid" id="timerContainer">
             <div class="time-unit" id="unit-years"><span class="number" id="years">0</span><span class="label">سنة</span></div>
@@ -169,7 +169,8 @@
     </div>
 
     <script>
-        const startDate = new Date("November 7, 2025 00:00:00");
+        // تم تعديل تاريخ البداية هنا إلى 8 نوفمبر
+        const startDate = new Date("November 8, 2025 00:00:00");
 
         function updateTimer() {
             const now = new Date();
@@ -205,7 +206,8 @@
             const element = document.getElementById(elementId);
             const span = document.getElementById(spanId);
             
-            if (value > 0 || (elementId === 'unit-months' && document.getElementById('years').innerText > 0)) {
+            // المنطق البرمجي لإظهار الوحدات فقط إذا كانت أكبر من صفر
+            if (value > 0 || (elementId === 'unit-months' && parseInt(document.getElementById('years').innerText) > 0)) {
                 element.style.display = "block";
                 span.innerText = value;
             } else {
