@@ -18,10 +18,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url('background.gif') no-repeat center center fixed;
+            background: #0a0a0a url('background.gif') no-repeat center center fixed;
             background-size: cover;
             color: #fff;
             overflow: hidden;
+            position: relative;
         }
 
         .overlay {
@@ -30,9 +31,35 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);
+            background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
             z-index: 1;
         }
+
+        /* --- تأثير القلوب المتحركة --- */
+        .heart-particle {
+            position: absolute;
+            color: rgba(255, 77, 77, 0.6);
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatAndFade 5s linear forwards;
+        }
+
+        @keyframes floatAndFade {
+            0% {
+                transform: translateY(100vh) scale(0.5) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.5) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        /* --------------------------- */
 
         .main-card {
             position: relative;
@@ -87,12 +114,6 @@
             display: none; 
         }
 
-        .time-unit:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 215, 0, 0.15);
-            border-color: #FFD700;
-        }
-
         .number {
             display: block;
             font-size: 2.2rem;
@@ -103,7 +124,6 @@
         .label {
             font-size: 0.9rem;
             opacity: 0.8;
-            font-weight: 400;
         }
 
         .music-player {
@@ -169,12 +189,10 @@
     </div>
 
     <script>
-        // تم تعديل تاريخ البداية هنا إلى 8 نوفمبر
         const startDate = new Date("November 8, 2025 00:00:00");
 
         function updateTimer() {
             const now = new Date();
-            
             let years = now.getFullYear() - startDate.getFullYear();
             let months = now.getMonth() - startDate.getMonth();
             let days = now.getDate() - startDate.getDate();
@@ -205,8 +223,6 @@
         function renderUnit(elementId, spanId, value) {
             const element = document.getElementById(elementId);
             const span = document.getElementById(spanId);
-            
-            // المنطق البرمجي لإظهار الوحدات فقط إذا كانت أكبر من صفر
             if (value > 0 || (elementId === 'unit-months' && parseInt(document.getElementById('years').innerText) > 0)) {
                 element.style.display = "block";
                 span.innerText = value;
@@ -215,6 +231,22 @@
             }
         }
 
+        // دالة إنشاء القلوب العشوائية
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-particle');
+            heart.innerHTML = '❤';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's'; // بين 2 و 5 ثواني
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        setInterval(createHeart, 400); // قلب جديد كل 400 مللي ثانية
         setInterval(updateTimer, 1000);
         updateTimer();
     </script>
