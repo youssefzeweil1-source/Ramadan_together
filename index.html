@@ -18,27 +18,27 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #0a0a0a url('background.gif') no-repeat center center fixed;
-            background-size: cover;
+            /* خلفية فاتحة ومشرقة */
+            background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
             color: #fff;
             overflow: hidden;
             position: relative;
         }
 
+        /* تعديل الشفافية لتكون أفتح */
         .overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.1) 100%);
             z-index: 1;
         }
 
-        /* --- تأثير القلوب المتحركة --- */
         .heart-particle {
             position: absolute;
-            color: rgba(255, 77, 77, 0.6);
+            color: rgba(255, 255, 255, 0.8); /* قلوب بيضاء شفافة لتبدو كأنها لمعان */
             font-size: 20px;
             user-select: none;
             pointer-events: none;
@@ -47,106 +47,97 @@
         }
 
         @keyframes floatAndFade {
-            0% {
-                transform: translateY(100vh) scale(0.5) rotate(0deg);
-                opacity: 0;
-            }
-            20% {
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateY(-10vh) scale(1.5) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
-        /* --------------------------- */
 
         .main-card {
             position: relative;
             z-index: 2;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            /* كارت أبيض مشرق */
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 40px; 
-            padding: 60px 40px; 
+            padding: 50px 30px; 
             text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-            max-width: 700px; 
-            width: 92%;
-            animation: fadeIn 2s ease-in-out;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 600px; 
+            width: 90%;
+            animation: fadeIn 1.5s ease-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         h1 {
-            font-size: 2.8rem; 
-            color: #FFD700;
-            margin-bottom: 15px;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            font-size: 2.5rem; 
+            color: #fff;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.1);
         }
 
         .subtitle {
-            font-size: 1.3rem;
-            margin-bottom: 40px;
-            opacity: 0.9;
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            color: #fff;
+            font-weight: bold;
         }
 
         .timer-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 12px;
             justify-content: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .time-unit {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 20px 10px;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 15px 5px;
             border-radius: 20px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            min-width: 90px;
-            flex: 1 1 100px; 
-            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            min-width: 85px;
+            flex: 1 1 90px;
             display: none; 
         }
 
         .number {
             display: block;
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 700;
-            color: #FFD700;
+            color: #fff;
         }
 
         .label {
-            font-size: 0.9rem;
-            opacity: 0.8;
+            font-size: 0.85rem;
+            color: #fff;
         }
 
         .music-player {
-            margin-top: 20px;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 12px 25px;
-            border-radius: 60px;
+            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 10px 20px;
+            border-radius: 50px;
             display: inline-flex;
-            align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         audio {
-            height: 35px;
-            width: 240px;
-            filter: invert(1);
+            height: 30px;
+            width: 200px;
+            /* إزالة الـ invert لجعل المشغل يظهر بلونه الطبيعي أو الأبيض */
         }
 
         footer {
-            margin-top: 35px;
+            margin-top: 30px;
             font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.1);
         }
 
         .heart {
@@ -156,7 +147,7 @@
         }
 
         @keyframes beat {
-            to { transform: scale(1.3); text-shadow: 0 0 10px #ff4d4d; }
+            to { transform: scale(1.4); }
         }
     </style>
 </head>
@@ -166,7 +157,7 @@
 
     <div class="main-card">
         <h1>🌙 حكايتنا بدأت</h1>
-        <p class="subtitle"> 💖 8/11/2025</p>
+        <p class="subtitle">💖 8/11/2025</p>
 
         <div class="timer-grid" id="timerContainer">
             <div class="time-unit" id="unit-years"><span class="number" id="years">0</span><span class="label">سنة</span></div>
@@ -231,22 +222,18 @@
             }
         }
 
-        // دالة إنشاء القلوب العشوائية
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart-particle');
-            heart.innerHTML = '❤';
+            heart.innerHTML = '❤'; 
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 3 + 2) + 's'; // بين 2 و 5 ثواني
-            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
             document.body.appendChild(heart);
-
-            setTimeout(() => {
-                heart.remove();
-            }, 5000);
+            setTimeout(() => { heart.remove(); }, 5000);
         }
 
-        setInterval(createHeart, 400); // قلب جديد كل 400 مللي ثانية
+        setInterval(createHeart, 300);
         setInterval(updateTimer, 1000);
         updateTimer();
     </script>
