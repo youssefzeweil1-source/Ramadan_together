@@ -35,9 +35,11 @@
             z-index: 1;
         }
 
+        /* تعديل القلوب لتصبح بيضاء صريحة وبدون توهج */
         .heart-particle {
             position: absolute;
-            color: rgba(255, 255, 255, 0.6);
+            color: #ffffff; /* أبيض ناصع */
+            text-shadow: none; /* إلغاء التوهج */
             font-size: 20px;
             user-select: none;
             pointer-events: none;
@@ -46,9 +48,9 @@
         }
 
         @keyframes floatAndFade {
-            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-            20% { opacity: 0.8; }
-            100% { transform: translateY(-10vh) scale(1.3); opacity: 0; }
+            0% { transform: translateY(110vh) scale(0.5) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; } /* تظهر بوضوح */
+            100% { transform: translateY(-10vh) scale(1.3) rotate(360deg); opacity: 0; }
         }
 
         .main-card {
@@ -221,10 +223,10 @@
             heart.classList.add('heart-particle');
             heart.innerHTML = '❤'; 
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 2.5) + 's';
+            heart.style.fontSize = (Math.random() * 15 + 12) + 'px';
             document.body.appendChild(heart);
-            setTimeout(() => { heart.remove(); }, 5000);
+            setTimeout(() => { heart.remove(); }, 6000);
         }
 
         setInterval(createHeart, 300);
