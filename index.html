@@ -12,16 +12,24 @@
             padding: 0;
         }
 
+        :root {
+            --glass: rgba(255, 255, 255, 0.2);
+            --glass-strong: rgba(255, 255, 255, 0.3);
+            --text-main: #ffffff;
+            --shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
         body {
             font-family: 'Cairo', sans-serif;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-            color: #fff;
+            color: var(--text-main);
             overflow: hidden;
             position: relative;
+            padding: 16px;
         }
 
         .overlay {
@@ -53,14 +61,14 @@
         .main-card {
             position: relative;
             z-index: 2;
-            background: rgba(255, 255, 255, 0.2);
+            background: var(--glass);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid var(--glass-strong);
             border-radius: 40px; 
             padding: 40px 20px; 
             text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            box-shadow: var(--shadow);
             max-width: 650px; 
             width: 90%;
             animation: fadeIn 1.5s ease-out;
@@ -83,6 +91,16 @@
             font-weight: bold;
         }
 
+        .status-pill {
+            display: inline-block;
+            margin-bottom: 16px;
+            font-size: 0.92rem;
+            background: rgba(255, 255, 255, 0.24);
+            border: 1px solid rgba(255, 255, 255, 0.32);
+            border-radius: 999px;
+            padding: 8px 14px;
+        }
+
         .timer-grid {
             display: flex;
             flex-wrap: wrap;
@@ -102,6 +120,11 @@
             cursor: pointer;
             transition: all 0.3s ease;
             user-select: none;
+        }
+
+        .time-unit:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.35);
         }
 
         .time-unit:active {
@@ -134,6 +157,12 @@
             color: #fff;
         }
 
+        .hint {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
         .music-player {
             margin-top: 20px;
             background: rgba(255, 255, 255, 0.3);
@@ -148,6 +177,20 @@
         footer { margin-top: 25px; font-size: 1.1rem; }
         .heart { color: #ff4d4d; display: inline-block; animation: beat 0.8s infinite alternate; }
         @keyframes beat { to { transform: scale(1.4); } }
+
+        @media (max-width: 600px) {
+            .main-card {
+                border-radius: 28px;
+                padding: 28px 14px;
+                width: 95%;
+            }
+
+            h1 { font-size: 1.75rem; }
+            .subtitle { font-size: 1rem; }
+            .number { font-size: 1.45rem; }
+            .time-unit { min-width: 72px; }
+            audio { width: 175px; }
+        }
     </style>
 </head>
 <body>
@@ -157,6 +200,7 @@
     <div class="main-card">
         <h1>🌙 حكايتنا بدأت</h1>
         <p class="subtitle">💖 8/11/2025</p>
+        <p class="status-pill" id="statusText">⌛ جاري الحساب...</p>
 
         <div class="timer-grid" id="timerContainer">
             <div class="time-unit" id="unit-years" onclick="applyEffect(this)"><span class="number" id="years">0</span><span class="label">سنة</span></div>
@@ -168,6 +212,7 @@
         </div>
 
         <div id="dynamic-message"></div>
+        <p class="hint">المربعات قابلة للمس لإضافة لمسة قلوب 💞</p>
 
         <div class="music-player">
             <audio controls autoplay loop>
@@ -198,18 +243,25 @@
 
         function updateTimer() {
             const now = new Date();
-            let years = now.getFullYear() - startDate.getFullYear();
-            let months = now.getMonth() - startDate.getMonth();
-            let days = now.getDate() - startDate.getDate();
+            const statusText = document.getElementById("statusText");
+            const isBeforeStart = now < startDate;
+            statusText.innerText = isBeforeStart ? "⏳ فاضل على البداية" : "💗 مرّ على بدايتنا";
+
+            const base = isBeforeStart ? now : startDate;
+            const target = isBeforeStart ? startDate : now;
+
+            let years = target.getFullYear() - base.getFullYear();
+            let months = target.getMonth() - base.getMonth();
+            let days = target.getDate() - base.getDate();
 
             if (days < 0) {
                 months--;
-                let lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                let lastMonth = new Date(target.getFullYear(), target.getMonth(), 0);
                 days += lastMonth.getDate();
             }
             if (months < 0) { years--; months += 12; }
 
-            const diffMs = now - startDate;
+            const diffMs = Math.abs(target - base);
             const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
