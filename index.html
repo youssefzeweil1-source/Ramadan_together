@@ -6,38 +6,39 @@
     <title>أجمل حكاية | 2025</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --glass: rgba(255, 255, 255, 0.2);
+            --glass-strong: rgba(255, 255, 255, 0.3);
+            --text-main: #ffffff;
+            --shadow: 0 25px 50px rgba(0, 0, 0, 0.18);
+            --accent: #ffe082;
         }
 
         body {
             font-family: 'Cairo', sans-serif;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-            color: #fff;
+            color: var(--text-main);
             overflow: hidden;
             position: relative;
+            padding: 16px;
         }
 
         .overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.05);
+            inset: 0;
+            background: rgba(0, 0, 0, 0.08);
             z-index: 1;
         }
 
         .heart-particle {
             position: absolute;
             color: #ffffff;
-            font-size: 20px;
             user-select: none;
             pointer-events: none;
             z-index: 0;
@@ -53,17 +54,17 @@
         .main-card {
             position: relative;
             z-index: 2;
-            background: rgba(255, 255, 255, 0.2);
+            background: var(--glass);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 40px; 
-            padding: 40px 20px; 
+            border: 1px solid var(--glass-strong);
+            border-radius: 34px;
+            padding: 30px 18px;
             text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-            max-width: 650px; 
-            width: 90%;
-            animation: fadeIn 1.5s ease-out;
+            box-shadow: var(--shadow);
+            max-width: 760px;
+            width: 94%;
+            animation: fadeIn 1.2s ease-out;
         }
 
         @keyframes fadeIn {
@@ -72,91 +73,158 @@
         }
 
         h1 {
-            font-size: 2.2rem; 
-            margin-bottom: 5px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            font-size: 2.2rem;
+            margin-bottom: 4px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 25px;
-            font-weight: bold;
+        .subtitle { font-size: 1.1rem; margin-bottom: 14px; font-weight: bold; }
+
+        .status-pill {
+            display: inline-flex;
+            gap: 7px;
+            align-items: center;
+            margin-bottom: 14px;
+            font-size: 0.92rem;
+            background: rgba(255, 255, 255, 0.24);
+            border: 1px solid rgba(255, 255, 255, 0.32);
+            border-radius: 999px;
+            padding: 8px 14px;
+        }
+
+        .progress-wrap {
+            margin: 0 auto 18px;
+            max-width: 560px;
+            text-align: right;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            opacity: 0.95;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.22);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #fff59d, #ffe082);
+            transition: width 0.8s ease;
         }
 
         .timer-grid {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
             gap: 10px;
-            justify-content: center;
-            margin-bottom: 25px;
+            margin-bottom: 14px;
         }
 
         .time-unit {
             background: rgba(255, 255, 255, 0.25);
-            padding: 15px 5px;
-            border-radius: 20px;
+            padding: 14px 6px;
+            border-radius: 18px;
             border: 1px solid rgba(255, 255, 255, 0.3);
-            min-width: 80px;
-            flex: 1 1 85px;
-            display: none; 
+            display: none;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             user-select: none;
         }
 
-        .time-unit:active {
-            transform: scale(0.9);
-            background: rgba(255, 255, 255, 0.5);
-        }
+        .time-unit:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.35); }
+        .time-unit:active { transform: scale(0.95); }
 
-        .bounce-effect {
-            animation: cardBounce 0.5s ease;
-        }
-
-        @keyframes cardBounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .number {
-            display: block;
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
+        .number { display: block; font-size: 1.8rem; font-weight: 700; }
         .label { font-size: 0.8rem; }
 
+        .bounce-effect { animation: cardBounce 0.5s ease; }
+        @keyframes cardBounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
         #dynamic-message {
-            margin-top: 20px;
-            font-size: 1.1rem;
+            margin-top: 8px;
+            font-size: 1.04rem;
             font-weight: bold;
             min-height: 1.5em;
-            color: #fff;
         }
 
+        .controls {
+            margin-top: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn {
+            border: 1px solid rgba(255, 255, 255, 0.34);
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 999px;
+            padding: 8px 13px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn:hover { background: rgba(255, 255, 255, 0.35); }
+
+        .hint { margin-top: 10px; font-size: 0.9rem; opacity: 0.92; }
+
         .music-player {
-            margin-top: 20px;
+            margin-top: 16px;
             background: rgba(255, 255, 255, 0.3);
-            padding: 10px 15px;
+            padding: 10px 14px;
             border-radius: 50px;
             display: inline-flex;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        audio { height: 30px; width: 200px; filter: brightness(1.5); }
+        audio { height: 30px; width: 210px; filter: brightness(1.5); }
 
-        footer { margin-top: 25px; font-size: 1.1rem; }
+        footer { margin-top: 20px; font-size: 1.06rem; }
         .heart { color: #ff4d4d; display: inline-block; animation: beat 0.8s infinite alternate; }
         @keyframes beat { to { transform: scale(1.4); } }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
+        }
+
+        @media (max-width: 600px) {
+            .main-card { border-radius: 28px; padding: 24px 12px; width: 97%; }
+            h1 { font-size: 1.75rem; }
+            .subtitle { font-size: 1rem; }
+            .number { font-size: 1.45rem; }
+            audio { width: 175px; }
+        }
     </style>
 </head>
 <body>
-
     <div class="overlay"></div>
 
     <div class="main-card">
         <h1>🌙 حكايتنا بدأت</h1>
         <p class="subtitle">💖 8/11/2025</p>
+        <p class="status-pill" id="statusText">⌛ جاري الحساب...</p>
+
+        <div class="progress-wrap" aria-live="polite">
+            <div class="progress-header">
+                <span id="progressLabel">التقدّم لأول سنة</span>
+                <span id="progressValue">0%</span>
+            </div>
+            <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progress">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
 
         <div class="timer-grid" id="timerContainer">
             <div class="time-unit" id="unit-years" onclick="applyEffect(this)"><span class="number" id="years">0</span><span class="label">سنة</span></div>
@@ -169,6 +237,14 @@
 
         <div id="dynamic-message"></div>
 
+        <div class="controls">
+            <button class="btn" id="toggleHeartsBtn" type="button">💞 إيقاف القلوب</button>
+            <button class="btn" id="copyBtn" type="button">📋 نسخ الحالة</button>
+            <button class="btn" id="changeMessageBtn" type="button">✨ رسالة جديدة</button>
+        </div>
+
+        <p class="hint">اضغط على أي مربع من العداد لعمل نبضة وقلوب ✨</p>
+
         <div class="music-player">
             <audio controls autoplay loop>
                 <source src="music.mp3" type="audio/mpeg">
@@ -179,16 +255,20 @@
     </div>
 
     <script>
-        const startDate = new Date("November 8, 2025 00:00:00");
-        
+        const startDate = new Date('November 8, 2025 00:00:00');
+        const firstYearDate = new Date(startDate);
+        firstYearDate.setFullYear(firstYearDate.getFullYear() + 1);
+
         const messages = [
-            "كل ثانية معاكي حياة جديدة...",
-            "أجمل صدفة في عمري كله ❤️",
-            "وجودك هو الأمان بالنسبة لي",
-            "نفسي نكبر سوا ونعجز سوا",
-            "كل يوم بحبك أكتر من اللي قبله",
-            "أنتي الحلم اللي مكنتش عاوز أصحى منه ❤️❤️"
+            'كل ثانية معاكي حياة جديدة...',
+            'أجمل صدفة في عمري كله ❤️',
+            'وجودك هو الأمان بالنسبة لي',
+            'نفسي نكبر سوا ونعجز سوا',
+            'كل يوم بحبك أكتر من اللي قبله',
+            'أنتي الحلم اللي مكنتش عاوز أصحى منه ❤️❤️'
         ];
+
+        let heartsEnabled = true;
 
         function setRandomMessage() {
             const msgEl = document.getElementById('dynamic-message');
@@ -196,45 +276,70 @@
             msgEl.innerText = messages[randomIndex];
         }
 
+        function updateProgress(now) {
+            const total = firstYearDate - startDate;
+            const elapsed = Math.min(Math.max(now - startDate, 0), total);
+            const progress = total > 0 ? Math.round((elapsed / total) * 100) : 0;
+            const fill = document.getElementById('progressFill');
+            const value = document.getElementById('progressValue');
+            const track = document.querySelector('.progress-track');
+
+            fill.style.width = `${progress}%`;
+            value.innerText = `${progress}%`;
+            track.setAttribute('aria-valuenow', String(progress));
+        }
+
         function updateTimer() {
             const now = new Date();
-            let years = now.getFullYear() - startDate.getFullYear();
-            let months = now.getMonth() - startDate.getMonth();
-            let days = now.getDate() - startDate.getDate();
+            const statusText = document.getElementById('statusText');
+            const isBeforeStart = now < startDate;
+            statusText.innerText = isBeforeStart ? '⏳ فاضل على البداية' : '💗 مرّ على بدايتنا';
+
+            const base = isBeforeStart ? now : startDate;
+            const target = isBeforeStart ? startDate : now;
+
+            let years = target.getFullYear() - base.getFullYear();
+            let months = target.getMonth() - base.getMonth();
+            let days = target.getDate() - base.getDate();
 
             if (days < 0) {
                 months--;
-                let lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                const lastMonth = new Date(target.getFullYear(), target.getMonth(), 0);
                 days += lastMonth.getDate();
             }
             if (months < 0) { years--; months += 12; }
 
-            const diffMs = now - startDate;
+            const diffMs = Math.abs(target - base);
             const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
 
-            renderUnit("unit-years", "years", years);
-            renderUnit("unit-months", "months", months);
-            renderUnit("unit-days", "days", days);
-            renderUnit("unit-hours", "hours", hours);
-            renderUnit("unit-minutes", "minutes", minutes);
-            document.getElementById("seconds").innerText = seconds;
+            renderUnit('unit-years', 'years', years);
+            renderUnit('unit-months', 'months', months);
+            renderUnit('unit-days', 'days', days);
+            renderUnit('unit-hours', 'hours', hours);
+            renderUnit('unit-minutes', 'minutes', minutes);
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+
+            updateProgress(now);
         }
 
         function renderUnit(elementId, spanId, value) {
             const element = document.getElementById(elementId);
             const span = document.getElementById(spanId);
             if (value > 0 || (elementId === 'unit-months' && parseInt(document.getElementById('years').innerText) > 0)) {
-                element.style.display = "block";
+                element.style.display = 'block';
                 span.innerText = value;
-            } else { element.style.display = "none"; }
+            } else {
+                element.style.display = 'none';
+            }
         }
 
         function applyEffect(el) {
             el.classList.add('bounce-effect');
             setTimeout(() => el.classList.remove('bounce-effect'), 500);
-            for(let i=0; i<5; i++) { createHeartAt(el); }
+            if (!heartsEnabled) return;
+            for (let i = 0; i < 5; i++) createHeartAt(el);
         }
 
         function createHeartAt(el) {
@@ -251,9 +356,10 @@
         }
 
         function createHeart() {
+            if (!heartsEnabled) return;
             const heart = document.createElement('div');
             heart.classList.add('heart-particle');
-            heart.innerHTML = '❤'; 
+            heart.innerHTML = '❤';
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.animationDuration = (Math.random() * 3 + 2.5) + 's';
             heart.style.fontSize = (Math.random() * 15 + 12) + 'px';
@@ -261,9 +367,31 @@
             setTimeout(() => heart.remove(), 6000);
         }
 
-        setRandomMessage(); 
-        setInterval(createHeart, 300);
+        async function copyStatus() {
+            const text = `حالة الحكاية الآن: ${document.getElementById('statusText').innerText}\n` +
+                `السنين ${document.getElementById('years').innerText} - الشهور ${document.getElementById('months').innerText} - الأيام ${document.getElementById('days').innerText}`;
+            try {
+                await navigator.clipboard.writeText(text);
+                const btn = document.getElementById('copyBtn');
+                btn.innerText = '✅ تم النسخ';
+                setTimeout(() => btn.innerText = '📋 نسخ الحالة', 1400);
+            } catch {
+                alert(text);
+            }
+        }
+
+        document.getElementById('toggleHeartsBtn').addEventListener('click', () => {
+            heartsEnabled = !heartsEnabled;
+            document.getElementById('toggleHeartsBtn').innerText = heartsEnabled ? '💞 إيقاف القلوب' : '🌙 تشغيل القلوب';
+        });
+
+        document.getElementById('copyBtn').addEventListener('click', copyStatus);
+        document.getElementById('changeMessageBtn').addEventListener('click', setRandomMessage);
+
+        setRandomMessage();
+        setInterval(createHeart, 320);
         setInterval(updateTimer, 1000);
+        setInterval(setRandomMessage, 10000);
         updateTimer();
     </script>
 </body>
