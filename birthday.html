@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ff6b9a">
+    <title>عيد ميلادك | حكايتنا الحلوة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink: #ff6b9a;
+            --rose: #ff3f7f;
+            --purple: #8b5cf6;
+            --ink: #43233c;
+            --muted: #85627b;
+            --card: rgba(255, 255, 255, .78);
+            --line: rgba(255, 107, 154, .2);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: var(--ink);
+            font-family: 'Cairo', sans-serif;
+            background:
+                radial-gradient(circle at 12% 8%, rgba(255,255,255,.9) 0 2px, transparent 3px),
+                radial-gradient(circle at 90% 15%, rgba(255,255,255,.8) 0 3px, transparent 4px),
+                linear-gradient(135deg, #ffe7ef 0%, #fff4f5 43%, #eee7ff 100%);
+        }
+
+        .glow, .glow::before, .glow::after {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .glow { width: 360px; height: 360px; right: -130px; top: -120px; background: rgba(255, 107, 154, .25); filter: blur(2px); }
+        .glow::before { content: ''; width: 250px; height: 250px; left: -500px; top: 500px; background: rgba(139, 92, 246, .18); }
+        .glow::after { content: '♥'; color: rgba(255, 255, 255, .85); font-size: 42px; left: -110px; top: 220px; animation: float 5s ease-in-out infinite; }
+
+        .welcome-screen { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: linear-gradient(135deg, rgba(255, 231, 239, .96), rgba(238, 231, 255, .97)); transition: opacity .45s ease, visibility .45s ease; }
+        .welcome-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .welcome-card { width: min(470px, 100%); padding: 38px 24px 31px; border: 1px solid rgba(255,255,255,.9); border-radius: 30px; background: rgba(255,255,255,.75); box-shadow: 0 25px 80px rgba(93, 43, 83, .18); text-align: center; backdrop-filter: blur(16px); animation: rise .75s ease both; }
+        .welcome-heart { display: block; margin-bottom: 12px; color: var(--rose); font-size: 3.1rem; animation: beat .8s ease-in-out infinite alternate; }
+        .welcome-card h2 { color: var(--rose); font-size: clamp(1.45rem, 5vw, 2rem); }
+        .welcome-card p { margin: 8px 0 22px; color: var(--muted); font-size: .95rem; line-height: 1.9; }
+        .enter-button { border: 0; border-radius: 999px; padding: 13px 31px; color: #fff; background: linear-gradient(120deg, var(--rose), var(--purple)); box-shadow: 0 12px 25px rgba(255, 63, 127, .25); cursor: pointer; font: 800 1rem 'Cairo', sans-serif; transition: transform .2s ease, box-shadow .2s ease; }
+        .enter-button:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 15px 28px rgba(255, 63, 127, .34); }
+        .enter-button:active { transform: scale(.97); }
+
+        .wrap { width: min(920px, calc(100% - 30px)); margin: 0 auto; padding: 34px 0 42px; }
+        .hero { text-align: center; padding: 20px 12px 27px; animation: rise .8s ease both; }
+        .eyebrow { display: inline-block; padding: 7px 16px; border: 1px solid var(--line); border-radius: 999px; color: var(--rose); background: rgba(255,255,255,.62); font-size: .84rem; font-weight: 700; }
+        h1 { margin: 15px auto 6px; color: var(--rose); font-size: clamp(2rem, 7vw, 4.2rem); line-height: 1.2; text-shadow: 0 8px 25px rgba(255, 63, 127, .16); }
+        .hero p { color: var(--muted); font-size: clamp(.98rem, 2.4vw, 1.18rem); }
+        .date-badge { display: inline-flex; gap: 8px; align-items: center; margin-top: 17px; padding: 10px 19px; border-radius: 14px; color: #fff; background: linear-gradient(120deg, var(--rose), var(--purple)); box-shadow: 0 12px 25px rgba(255, 63, 127, .2); font-weight: 800; }
+
+        .card { margin-top: 14px; padding: clamp(20px, 4vw, 34px); border: 1px solid rgba(255,255,255,.8); border-radius: 28px; background: var(--card); box-shadow: 0 24px 70px rgba(93, 43, 83, .12); backdrop-filter: blur(14px); animation: rise .8s .1s ease both; }
+        .section-title { text-align: center; font-size: 1.35rem; margin-bottom: 20px; }
+        .section-title span { color: var(--rose); }
+
+        .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .unit { padding: 17px 8px 13px; border: 1px solid var(--line); border-radius: 18px; text-align: center; background: rgba(255,255,255,.72); }
+        .number { display: block; color: var(--rose); font-size: clamp(1.65rem, 5vw, 2.5rem); font-weight: 800; line-height: 1.15; }
+        .label { color: var(--muted); font-size: .82rem; }
+        .next-birthday { margin-top: 16px; text-align: center; color: var(--muted); font-size: .9rem; }
+
+        .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 18px; }
+        .stat { display: flex; align-items: center; gap: 14px; padding: 18px; border-radius: 19px; background: linear-gradient(145deg, rgba(255,255,255,.92), rgba(255,235,243,.75)); }
+        .stat-icon { display: grid; place-items: center; flex: 0 0 48px; width: 48px; height: 48px; border-radius: 15px; color: #fff; background: linear-gradient(135deg, var(--pink), var(--purple)); font-size: 1.35rem; }
+        .stat strong { display: block; color: var(--rose); font-size: 1.55rem; line-height: 1.25; }
+        .stat small { color: var(--muted); font-size: .79rem; }
+
+        .message { position: relative; margin-top: 18px; padding: 22px 20px; border-radius: 20px; color: #713e61; background: rgba(255, 231, 239, .75); text-align: center; font-size: 1.03rem; line-height: 2; }
+        .message::before { content: '“'; position: absolute; right: 14px; top: -4px; color: var(--pink); font: 700 3rem Georgia, serif; }
+        .music-box { display: flex; justify-content: center; margin-top: 19px; }
+        .music-button { border: 0; border-radius: 999px; padding: 11px 19px; color: #fff; background: linear-gradient(120deg, var(--rose), var(--purple)); box-shadow: 0 10px 22px rgba(255, 63, 127, .2); cursor: pointer; font: 700 .88rem 'Cairo', sans-serif; transition: transform .2s ease, box-shadow .2s ease; }
+        .music-button:hover { transform: translateY(-2px); box-shadow: 0 13px 25px rgba(255, 63, 127, .28); }
+        .music-button:active { transform: scale(.97); }
+        footer { padding-top: 24px; text-align: center; color: var(--muted); font-size: .86rem; }
+        .heart { color: var(--rose); display: inline-block; animation: beat .8s ease-in-out infinite alternate; }
+
+        @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes beat { to { transform: scale(1.3); } }
+        @keyframes float { 50% { transform: translateY(-18px) rotate(10deg); } }
+        @media (max-width: 560px) {
+            .wrap { width: min(100% - 20px, 920px); padding-top: 19px; }
+            .card { border-radius: 22px; padding: 18px 13px; }
+            .countdown { gap: 7px; }
+            .unit { padding: 13px 4px 10px; border-radius: 14px; }
+            .label { font-size: .72rem; }
+            .stats { gap: 9px; }
+            .stat { gap: 9px; padding: 13px 10px; }
+            .stat-icon { flex-basis: 39px; width: 39px; height: 39px; font-size: 1.05rem; }
+            .stat strong { font-size: 1.25rem; }
+            .stat small { font-size: .67rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-card">
+            <span class="welcome-heart">♥</span>
+            <h2>في حاجة حلوة مستنياكي</h2>
+            <p>اضغطي دخول عشان نفتح صفحة عيد ميلادك ونشغّل موسيقى حكايتنا.</p>
+            <button class="enter-button" id="enterButton" type="button">دخول 🎀</button>
+        </div>
+    </div>
+    <div class="glow"></div>
+    <main class="wrap">
+        <header class="hero">
+            <span class="eyebrow">يا أجمل من رأتها عيني وسمعتها أذني وحدّثها لساني وتحضنها دراعي إن شاء الله :)</span>
+            <h1>كل سنة وإنتي طيبة يا حبيبتي 🎂</h1>
+            <div class="date-badge">🎀 اتولدتي في 1 يوليو 2011</div>
+        </header>
+
+        <section class="card" aria-labelledby="birthday-title">
+            <h2 class="section-title" id="birthday-title">فاضل على عيد ميلادك الجاي <span>♥</span></h2>
+            <div class="countdown" aria-live="polite">
+                <div class="unit"><span class="number" id="days">0</span><span class="label">يوم</span></div>
+                <div class="unit"><span class="number" id="hours">0</span><span class="label">ساعة</span></div>
+                <div class="unit"><span class="number" id="minutes">0</span><span class="label">دقيقة</span></div>
+                <div class="unit"><span class="number" id="seconds">0</span><span class="label">ثانية</span></div>
+            </div>
+            <p class="next-birthday" id="nextBirthday">بنحسبها من دلوقتي…</p>
+        </section>
+
+        <section class="card" aria-labelledby="our-story-title">
+            <h2 class="section-title" id="our-story-title">حاجات حلوة في <span>حكايتنا</span></h2>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-icon">🎉</div>
+                    <div><strong>1</strong><small>عيد ميلاد حضرته معاكي</small></div>
+                </div>
+                <div class="stat">
+                    <div class="stat-icon">💞</div>
+                    <div><strong id="togetherDays">0</strong><small>يوم بقالنا مع بعض</small></div>
+                </div>
+            </div>
+            <div class="music-box">
+                <audio id="birthdayMusic" loop preload="auto">
+                    <source src="assets/pixabay-happy-birthday.mp3" type="audio/mpeg">
+                </audio>
+                <button class="music-button" id="musicButton" type="button">❚❚ وقّفي الموسيقى</button>
+            </div>
+        </section>
+
+        <footer>من قلبي ليكي… كل سنة وإنتي أجمل حاجة فيه <span class="heart">♥</span></footer>
+    </main>
+
+    <script>
+        // تاريخ ميلادها: 1 يوليو 2011. نعرض العداد حتى عيد الميلاد القادم تلقائياً.
+        const birthMonth = 6; // يوليو في JavaScript رقمه 6 لأن الشهور تبدأ من 0
+        const birthDay = 1;
+        const relationshipStart = new Date(2025, 10, 8); // التاريخ الموجود في index.html: 8 نوفمبر 2025
+
+        const $ = (id) => document.getElementById(id);
+        const pad = (value) => String(value).padStart(2, '0');
+
+        function nextBirthdayFrom(now) {
+            let birthday = new Date(now.getFullYear(), birthMonth, birthDay, 0, 0, 0);
+            if (birthday <= now) birthday = new Date(now.getFullYear() + 1, birthMonth, birthDay, 0, 0, 0);
+            return birthday;
+        }
+
+        function updateBirthdayCountdown() {
+            const now = new Date();
+            const birthday = nextBirthdayFrom(now);
+            const difference = birthday - now;
+            const totalSeconds = Math.max(0, Math.floor(difference / 1000));
+            const days = Math.floor(totalSeconds / 86400);
+            const hours = Math.floor((totalSeconds % 86400) / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            $('days').textContent = days;
+            $('hours').textContent = pad(hours);
+            $('minutes').textContent = pad(minutes);
+            $('seconds').textContent = pad(seconds);
+            $('nextBirthday').textContent = `عيد ميلادك الجاي يوم 1 يوليو ${birthday.getFullYear()} 🎈`;
+        }
+
+        function updateTogetherDays() {
+            const now = new Date();
+            const elapsed = Math.max(0, now - relationshipStart);
+            $('togetherDays').textContent = Math.floor(elapsed / 86400000).toLocaleString('ar-EG');
+        }
+
+        // الموسيقى تبدأ بعد ضغط زر الدخول لأن المتصفحات تمنع التشغيل التلقائي قبل تفاعل المستخدم.
+        const birthdayMusic = $('birthdayMusic');
+        let musicTimer;
+        let musicPlaying = false;
+
+        $('musicButton').addEventListener('click', () => {
+            toggleMusic();
+        });
+
+        function toggleMusic() {
+            musicPlaying = !musicPlaying;
+            if (musicPlaying) {
+                birthdayMusic.play().catch(() => { musicPlaying = false; });
+                $('musicButton').textContent = '❚❚ وقّفي الموسيقى';
+            } else {
+                birthdayMusic.pause();
+                $('musicButton').textContent = '♫ شغّلي موسيقى حكايتنا';
+            }
+        }
+
+        $('enterButton').addEventListener('click', () => {
+            if (!musicPlaying) toggleMusic();
+            $('welcomeScreen').classList.add('hidden');
+        });
+
+        updateBirthdayCountdown();
+        updateTogetherDays();
+        setInterval(updateBirthdayCountdown, 1000);
+        setInterval(updateTogetherDays, 60000);
+    </script>
+</body>
+</html>
