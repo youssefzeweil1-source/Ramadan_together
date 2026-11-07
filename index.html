@@ -162,6 +162,25 @@
         .clip-caption { position:absolute; top:18px; left:50%; transform:translateX(-50%); padding:8px 15px; border:1px solid rgba(255,255,255,.24); border-radius:999px; background:rgba(18,7,31,.62); color:#fff3d4; font-size:.76rem; font-weight:700; backdrop-filter:blur(8px); }
         #skip-clip-btn { position:absolute; top:18px; right:18px; z-index:2; padding:9px 13px; border:1px solid rgba(255,255,255,.3); border-radius:999px; background:rgba(18,7,31,.72); color:#fff; cursor:pointer; font-size:.76rem; font-weight:700; backdrop-filter:blur(8px); transition:.2s; }
         #skip-clip-btn:hover { transform:translateY(-2px); background:linear-gradient(135deg,var(--pink),var(--purple)); }
+        #anniversary-overlay { position:fixed; inset:0; z-index:70; display:none; place-items:center; width:100vw; height:100dvh; overflow:hidden; padding:48px 20px 28px; background:radial-gradient(circle at 50% 18%, rgba(155,93,229,.28), transparent 38%), #090412; }
+        #anniversary-overlay.active { display:grid; animation:rise .6s ease both; }
+        .anniversary-stage { width:min(760px, 100%); text-align:center; }
+        .anniversary-frame { position:relative; width:min(660px, 100%); height:min(72vh, 620px); margin:auto; overflow:hidden; border:1px solid rgba(255,255,255,.32); border-radius:28px; background:#160b27; box-shadow:0 28px 90px rgba(0,0,0,.52); }
+        .anniversary-frame::after { content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg, rgba(12,4,23,.08) 35%, rgba(12,4,23,.82)); }
+        #anniversary-photo { width:100%; height:100%; display:block; object-fit:cover; }
+        .anniversary-frame.reveal #anniversary-photo { animation:memoryReveal 5.2s ease both; }
+        .anniversary-copy { position:absolute; right:0; bottom:0; left:0; z-index:1; padding:34px 22px 24px; text-align:center; }
+        #anniversary-caption { color:#fff8ef; font-family:'Caveat','Cairo',cursive; font-size:clamp(1.7rem,5vw,3rem); text-shadow:0 2px 14px rgba(0,0,0,.6); }
+        #anniversary-days { margin-top:4px; color:#ffe29a; font-size:.86rem; font-weight:700; }
+        .anniversary-kicker { margin-bottom:12px; color:#ffd166; font-size:.76rem; font-weight:800; letter-spacing:2px; }
+        .anniversary-progress { display:flex; justify-content:center; gap:7px; margin-top:16px; }
+        .anniversary-progress i { width:28px; height:4px; border-radius:99px; background:rgba(255,255,255,.24); transition:.3s; }
+        .anniversary-progress i.active { background:linear-gradient(90deg,var(--gold),var(--pink)); box-shadow:0 0 12px rgba(255,209,102,.55); }
+        .anniversary-finale { display:none; position:absolute; inset:0; z-index:2; place-items:center; padding:30px; text-align:center; background:radial-gradient(circle, rgba(89,32,99,.92), rgba(9,4,18,.98)); }
+        .anniversary-finale.show { display:grid; animation:rise .7s ease both; }
+        .anniversary-finale h2 { max-width:620px; color:#fff8ef; font-family:'Caveat','Cairo',cursive; font-size:clamp(2.4rem,7vw,5rem); line-height:1.08; text-shadow:0 0 25px rgba(255,111,145,.45); }
+        .anniversary-finale p { margin-top:14px; color:#ffe29a; font-size:1rem; }
+        #skip-anniversary-btn { position:absolute; top:18px; right:18px; z-index:3; padding:9px 13px; border:1px solid rgba(255,255,255,.3); border-radius:999px; background:rgba(18,7,31,.72); color:#fff; cursor:pointer; font-size:.76rem; font-weight:700; backdrop-filter:blur(8px); }
         footer { text-align: center; color: #d5c5e0; font-size: .82rem; margin-top: 38px; }
         footer .heart { color: var(--pink); display: inline-block; animation: beat .9s infinite alternate; }
         .toast { position: fixed; left: 50%; bottom: 24px; z-index: 20; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; padding: 11px 17px; border-radius: 999px; background: #fff8ef; color: #351941; font-size: .82rem; font-weight: 700; box-shadow: 0 12px 35px rgba(0,0,0,.3); transition: .3s; }
@@ -178,6 +197,7 @@
         @keyframes fly { 0% { opacity: 1; transform: translate(0,0) scale(.7) rotate(0); } 100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(1.5) rotate(35deg); } }
         @keyframes loveType { 0%, 10% { width: 0; } 48%, 78% { width: 12ch; } 90%, 100% { width: 0; } }
         @keyframes loveShine { from { background-position: 110% center; } to { background-position: -110% center; } }
+        @keyframes memoryReveal { 0% { opacity:0; transform:scale(1.12); filter:blur(8px) saturate(.7); } 16% { opacity:1; filter:blur(0) saturate(1.1); } 100% { transform:scale(1); } }
         @media (max-width: 760px) {
             .shell { padding: 16px 13px 30px; }
             .hero { grid-template-columns: 1fr; padding: 28px 20px 18px; text-align: center; gap: 5px; }
@@ -226,6 +246,23 @@
         <video id="memory-clip" playsinline preload="auto" src="media/memory-clip.mp4"></video>
         <div class="clip-caption">ذكرياتنا الحلوة 💞</div>
         <button id="skip-clip-btn" type="button">تخطي الكليب ⏭</button>
+    </div>
+    <div id="anniversary-overlay" aria-label="كليب السنة الأولى">
+        <div class="anniversary-stage">
+            <div class="anniversary-frame" id="anniversary-frame">
+                <img id="anniversary-photo" src="media/memories/memory-01.jpg" alt="ذكرى من حكايتنا">
+                <div class="anniversary-copy">
+                    <div class="anniversary-kicker">من يوم البداية لحد النهارده ✨</div>
+                    <div id="anniversary-caption">أول صفحة في حكايتنا</div>
+                    <div id="anniversary-days">بعد 0 يوم من البداية</div>
+                </div>
+                <div class="anniversary-finale" id="anniversary-finale">
+                    <div><h2>سنة خلصت من حكايتنا…<br>وحبي ليكي لسه بيكبر 💖</h2><p>واللي جاي أحلى بكتير</p></div>
+                </div>
+            </div>
+            <div class="anniversary-progress" id="anniversary-progress" aria-hidden="true"></div>
+        </div>
+        <button id="skip-anniversary-btn" type="button">تخطي الذكريات ⏭</button>
     </div>
     <main class="shell">
         <header class="topbar">
@@ -336,10 +373,61 @@
         const music = $('music');
         let messageIndex = 0;
         let toastTimer;
+        let anniversaryTimer;
+        let anniversaryIndex = 0;
+        const anniversaryMemories = [
+            { src: 'media/memories/memory-01.jpg', title: 'أول صفحة في حكايتنا', days: 0 },
+            { src: 'media/memories/memory-02.jpg', title: 'ضحكة خلت اليوم له معنى', days: 42 },
+            { src: 'media/memories/memory-03.jpg', title: 'تفصيلة صغيرة… بس عمرها كبير', days: 118 },
+            { src: 'media/memories/memory-04.jpg', title: 'كل خطوة كانت بتقربنا أكتر', days: 233 },
+            { src: 'media/memories/memory-05.jpg', title: 'سنة كاملة ولسه أجمل صدفة', days: 319 }
+        ];
 
         function showToast(text) {
             const toast = $('toast'); toast.textContent = text; toast.classList.add('show');
             clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+        }
+        function closeAnniversaryStory() {
+            clearTimeout(anniversaryTimer);
+            $('anniversary-overlay').classList.remove('active');
+            $('anniversary-finale').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        function showAnniversaryFinale() {
+            $('anniversary-finale').classList.add('show');
+            burst(innerWidth / 2, innerHeight / 2, 34);
+            anniversaryTimer = setTimeout(closeAnniversaryStory, 7600);
+        }
+        function showAnniversaryMemory(index) {
+            const memory = anniversaryMemories[index];
+            const frame = $('anniversary-frame');
+            $('anniversary-photo').src = memory.src;
+            $('anniversary-photo').alt = memory.title;
+            $('anniversary-caption').textContent = memory.title;
+            $('anniversary-days').textContent = `بعد ${memory.days} يوم من البداية`;
+            $('anniversary-progress').innerHTML = anniversaryMemories.map((_, i) => `<i class="${i === index ? 'active' : ''}"></i>`).join('');
+            frame.classList.remove('reveal'); void frame.offsetWidth; frame.classList.add('reveal');
+            anniversaryTimer = setTimeout(() => {
+                anniversaryIndex++;
+                if (anniversaryIndex < anniversaryMemories.length) showAnniversaryMemory(anniversaryIndex);
+                else showAnniversaryFinale();
+            }, 5200);
+        }
+        function startAnniversaryStory() {
+            const year = new Date().getFullYear();
+            const storyKey = `anniversary-story-${year}`;
+            if (localStorage.getItem(storyKey) === 'played') return;
+            localStorage.setItem(storyKey, 'played');
+            anniversaryIndex = 0;
+            $('anniversary-overlay').classList.add('active');
+            $('anniversary-finale').classList.remove('show');
+            document.body.style.overflow = 'hidden';
+            showAnniversaryMemory(anniversaryIndex);
+        }
+        function celebrateIfDue() {
+            const now = new Date();
+            const anniversaryToday = now.getFullYear() > startDate.getFullYear() && now.getMonth() === startDate.getMonth() && now.getDate() === startDate.getDate();
+            if (anniversaryToday) setTimeout(startAnniversaryStory, 900);
         }
         function setMessage(next = true) {
             messageIndex = next ? (messageIndex + 1) % messages.length : Math.floor(Math.random() * messages.length);
@@ -421,6 +509,7 @@
             setTimeout(() => $('welcome-message').classList.remove('show'), 4200);
             music.volume = Number($('volumeControl').value);
             music.play().then(syncPlayer).catch(syncPlayer);
+            celebrateIfDue();
         }
         function unlockStory() {
             const clip = $('memory-clip');
@@ -432,6 +521,7 @@
         $('memory-clip').addEventListener('ended', finishStory);
         $('memory-clip').addEventListener('click', () => { const clip = $('memory-clip'); if (clip.paused) clip.play(); });
         $('skip-clip-btn').addEventListener('click', finishStory);
+        $('skip-anniversary-btn').addEventListener('click', closeAnniversaryStory);
         document.querySelectorAll('.answer-btn').forEach(btn => btn.addEventListener('click', () => {
             if (btn.dataset.answer === 'both') { burst(innerWidth / 2, innerHeight / 2, 28); unlockStory(); }
             else { btn.classList.remove('wrong'); void btn.offsetWidth; btn.classList.add('wrong'); $('gate-hint').textContent = 'الإجابة الحلوة عارفاها… جرّب تاني 💞'; }
