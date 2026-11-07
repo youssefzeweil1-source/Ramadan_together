@@ -259,7 +259,7 @@
         </section>
     </div>
     <div id="memory-clip-overlay" aria-label="كليب الذكريات">
-        <video id="memory-clip" playsinline preload="auto" src="media/memory-clip.mp4"></video>
+        <video id="memory-clip" playsinline muted preload="auto" src="media/memory-clip.mp4"></video>
         <div class="clip-caption">ذكرياتنا الحلوة 💞</div>
         <button id="skip-clip-btn" type="button">تخطي الكليب ⏭</button>
     </div>
@@ -600,6 +600,10 @@
             const clip = $('memory-clip');
             $('memory-clip-overlay').classList.add('active');
             clip.currentTime = 0;
+            clip.muted = true;
+            music.currentTime = 0;
+            music.volume = Number($('volumeControl').value);
+            music.play().then(syncPlayer).catch(syncPlayer);
             clip.play().catch(() => showToast('اضغط على الكليب عشان يبدأ 🎬'));
         }
         document.querySelectorAll('.time-unit').forEach(unit => { unit.addEventListener('click', () => applyEffect(unit)); unit.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); applyEffect(unit); } }); });
