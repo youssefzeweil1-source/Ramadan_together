@@ -8,7 +8,7 @@
     <title>حكايتنا | منذ 8 نوفمبر 2025</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Caveat:wght@600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
             --night: #130d24;
@@ -67,9 +67,9 @@
         #sky-layer { position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden; }
         .sky-star { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; box-shadow: 0 0 7px rgba(255,255,255,.95); animation: starShimmer var(--twinkle, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); }
         .sky-star.big { width: 4px; height: 4px; background: var(--gold); }
-        .love-video { position: absolute; left: var(--love-left, 50%); top: var(--love-top, 28%); z-index: 0; display: block; width: 0; overflow: hidden; border-right: 2px solid var(--gold); color: transparent; font-family: 'Playfair Display', Georgia, serif; font-size: clamp(1.15rem, 3.2vw, 2.5rem); font-weight: 700; letter-spacing: .18em; white-space: nowrap; transform: translate(-50%, -50%) rotate(var(--love-rotate, -4deg)); background: linear-gradient(105deg, var(--gold), #fff 42%, var(--pink) 68%, var(--gold)); background-size: 220% auto; -webkit-background-clip: text; background-clip: text; text-shadow: 0 0 18px rgba(255, 209, 102, .35), 0 0 38px rgba(255, 111, 145, .18); opacity: .72; animation: loveType 7s steps(10, end) infinite, loveShine 4.5s linear infinite; animation-delay: var(--love-delay, 0s), var(--love-delay, 0s); }
+        .love-video { position: absolute; left: var(--love-left, 50%); top: var(--love-top, 28%); z-index: 0; display: block; width: 0; overflow: hidden; border-right: 3px solid var(--gold); color: var(--gold); font-family: 'Caveat', 'Comic Sans MS', cursive; font-size: clamp(1.7rem, 4.3vw, 3.2rem); font-style: italic; font-weight: 700; letter-spacing: .08em; white-space: nowrap; transform: translate(-50%, -50%) rotate(var(--love-rotate, -4deg)); text-shadow: 2px 2px 0 rgba(255, 111, 145, .3), 0 0 16px rgba(255, 209, 102, .65), 0 0 38px rgba(255, 111, 145, .25); opacity: .82; animation: loveType 7s steps(10, end) infinite; animation-delay: var(--love-delay, 0s); }
         .love-video::after { content: 'I LOVE YOU'; position: absolute; inset: 0; color: var(--pink); opacity: .42; filter: blur(12px); transform: scale(1.06); z-index: -1; }
-        .love-video.ghost { font-size: clamp(.78rem, 1.8vw, 1.35rem); opacity: .26; letter-spacing: .28em; filter: blur(.2px); }
+        .love-video.ghost { font-size: clamp(1.05rem, 2.4vw, 1.7rem); opacity: .3; letter-spacing: .12em; filter: blur(.2px); }
         .eyebrow { color: var(--gold); font-size: .78rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
         h1 { font-family: 'Playfair Display', 'Cairo', serif; font-size: clamp(2.25rem, 6vw, 4.8rem); line-height: 1.12; margin-bottom: 15px; text-wrap: balance; }
         .hero-copy { color: #eadff4; line-height: 1.9; max-width: 560px; }
