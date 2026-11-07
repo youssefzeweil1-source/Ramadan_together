@@ -67,6 +67,9 @@
         #sky-layer { position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden; }
         .sky-star { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; box-shadow: 0 0 7px rgba(255,255,255,.95); animation: starShimmer var(--twinkle, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); }
         .sky-star.big { width: 4px; height: 4px; background: var(--gold); }
+        .love-video { position: absolute; left: var(--love-left, 50%); top: var(--love-top, 28%); z-index: 0; display: block; width: 0; overflow: hidden; border-right: 2px solid var(--gold); color: transparent; font-family: 'Playfair Display', Georgia, serif; font-size: clamp(1.15rem, 3.2vw, 2.5rem); font-weight: 700; letter-spacing: .18em; white-space: nowrap; transform: translate(-50%, -50%) rotate(var(--love-rotate, -4deg)); background: linear-gradient(105deg, var(--gold), #fff 42%, var(--pink) 68%, var(--gold)); background-size: 220% auto; -webkit-background-clip: text; background-clip: text; text-shadow: 0 0 18px rgba(255, 209, 102, .35), 0 0 38px rgba(255, 111, 145, .18); opacity: .72; animation: loveType 7s steps(10, end) infinite, loveShine 4.5s linear infinite; animation-delay: var(--love-delay, 0s), var(--love-delay, 0s); }
+        .love-video::after { content: 'I LOVE YOU'; position: absolute; inset: 0; color: var(--pink); opacity: .42; filter: blur(12px); transform: scale(1.06); z-index: -1; }
+        .love-video.ghost { font-size: clamp(.78rem, 1.8vw, 1.35rem); opacity: .26; letter-spacing: .28em; filter: blur(.2px); }
         .eyebrow { color: var(--gold); font-size: .78rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
         h1 { font-family: 'Playfair Display', 'Cairo', serif; font-size: clamp(2.25rem, 6vw, 4.8rem); line-height: 1.12; margin-bottom: 15px; text-wrap: balance; }
         .hero-copy { color: #eadff4; line-height: 1.9; max-width: 560px; }
@@ -173,6 +176,8 @@
         @keyframes bounce { 50% { transform: scale(1.08); } }
         @keyframes beat { to { transform: scale(1.35); } }
         @keyframes fly { 0% { opacity: 1; transform: translate(0,0) scale(.7) rotate(0); } 100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(1.5) rotate(35deg); } }
+        @keyframes loveType { 0%, 10% { width: 0; } 48%, 78% { width: 12ch; } 90%, 100% { width: 0; } }
+        @keyframes loveShine { from { background-position: 110% center; } to { background-position: -110% center; } }
         @media (max-width: 760px) {
             .shell { padding: 16px 13px 30px; }
             .hero { grid-template-columns: 1fr; padding: 28px 20px 18px; text-align: center; gap: 5px; }
@@ -377,6 +382,15 @@
         }
         function buildSky() {
             const sky = $('sky-layer');
+            const lovePositions = [[50, 24, -4, 0, false], [18, 42, 6, -2.8, true], [80, 57, -7, -4.6, true], [33, 78, 4, -1.4, true], [70, 17, 8, -5.8, true]];
+            lovePositions.forEach(([left, top, rotate, delay, ghost]) => {
+                const love = document.createElement('span');
+                love.className = `love-video${ghost ? ' ghost' : ''}`;
+                love.textContent = 'I LOVE YOU';
+                love.style.setProperty('--love-left', `${left}%`); love.style.setProperty('--love-top', `${top}%`);
+                love.style.setProperty('--love-rotate', `${rotate}deg`); love.style.setProperty('--love-delay', `${delay}s`);
+                sky.appendChild(love);
+            });
             for (let i = 0; i < 78; i++) {
                 const star = document.createElement('span'); star.className = `sky-star${i % 13 === 0 ? ' big' : ''}`;
                 star.style.left = `${Math.random() * 100}%`; star.style.top = `${Math.random() * 100}%`;
