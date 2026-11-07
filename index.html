@@ -396,7 +396,6 @@
         let anniversaryTimer;
         let anniversaryIndex = 0;
         let secondChapter = false;
-        let secondChapterStart;
         const anniversaryMemories = [
             { src: 'media/memories/memory-01.jpg', title: 'أول صفحة في حكايتنا', days: 0 },
             { src: 'media/memories/memory-02.jpg', title: 'ضحكة خلت اليوم له معنى', days: 42 },
@@ -460,7 +459,6 @@
         function startSecondYear() {
             closeAnniversaryStory();
             secondChapter = true;
-            secondChapterStart = new Date();
             document.body.classList.add('second-chapter');
             $('pageTitle').innerHTML = 'الفصل الثاني<br><span style="color:var(--gold)">لسه الحكاية بتبدأ</span>';
             document.querySelector('.hero-copy').textContent = 'السنة الأولى كانت أجمل فصل، بس الحكاية لسه فيها صفحات كتير هنكتبها سوا.';
@@ -494,7 +492,7 @@
         function updateTimer() {
             const now = new Date();
             if (secondChapter) {
-                const values = unitDiff(secondChapterStart, now);
+                const values = unitDiff(startDate, now);
                 $('statusText').textContent = '💞 أيامنا الجاية';
                 ['years','months','days','hours','minutes','seconds'].forEach(name => renderUnit(name, values[name]));
                 $('todayLabel').textContent = 'الفصل الثاني • ' + new Intl.DateTimeFormat('ar-EG', { dateStyle: 'full' }).format(now);
