@@ -157,6 +157,8 @@
         #memory-clip-overlay.active { display:grid; animation:rise .45s ease both; }
         #memory-clip { width:100vw; height:100dvh; max-width:100vw; max-height:100dvh; object-fit:contain; background:#090412; }
         .clip-caption { position:absolute; top:18px; left:50%; transform:translateX(-50%); padding:8px 15px; border:1px solid rgba(255,255,255,.24); border-radius:999px; background:rgba(18,7,31,.62); color:#fff3d4; font-size:.76rem; font-weight:700; backdrop-filter:blur(8px); }
+        #skip-clip-btn { position:absolute; top:18px; right:18px; z-index:2; padding:9px 13px; border:1px solid rgba(255,255,255,.3); border-radius:999px; background:rgba(18,7,31,.72); color:#fff; cursor:pointer; font-size:.76rem; font-weight:700; backdrop-filter:blur(8px); transition:.2s; }
+        #skip-clip-btn:hover { transform:translateY(-2px); background:linear-gradient(135deg,var(--pink),var(--purple)); }
         footer { text-align: center; color: #d5c5e0; font-size: .82rem; margin-top: 38px; }
         footer .heart { color: var(--pink); display: inline-block; animation: beat .9s infinite alternate; }
         .toast { position: fixed; left: 50%; bottom: 24px; z-index: 20; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; padding: 11px 17px; border-radius: 999px; background: #fff8ef; color: #351941; font-size: .82rem; font-weight: 700; box-shadow: 0 12px 35px rgba(0,0,0,.3); transition: .3s; }
@@ -218,6 +220,7 @@
     <div id="memory-clip-overlay" aria-label="كليب الذكريات">
         <video id="memory-clip" playsinline preload="auto" src="media/memory-clip.mp4"></video>
         <div class="clip-caption">ذكرياتنا الحلوة 💞</div>
+        <button id="skip-clip-btn" type="button">تخطي الكليب ⏭</button>
     </div>
     <main class="shell">
         <header class="topbar">
@@ -397,6 +400,7 @@
             setTheme(saved);
         }
         function finishStory() {
+            $('memory-clip').pause();
             $('memory-clip-overlay').classList.remove('active');
             document.body.classList.add('gate-open');
             setTimeout(() => $('welcome-message').classList.add('show'), 520);
@@ -413,6 +417,7 @@
         document.querySelectorAll('.time-unit').forEach(unit => { unit.addEventListener('click', () => applyEffect(unit)); unit.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); applyEffect(unit); } }); });
         $('memory-clip').addEventListener('ended', finishStory);
         $('memory-clip').addEventListener('click', () => { const clip = $('memory-clip'); if (clip.paused) clip.play(); });
+        $('skip-clip-btn').addEventListener('click', finishStory);
         document.querySelectorAll('.answer-btn').forEach(btn => btn.addEventListener('click', () => {
             if (btn.dataset.answer === 'both') { burst(innerWidth / 2, innerHeight / 2, 28); unlockStory(); }
             else { btn.classList.remove('wrong'); void btn.offsetWidth; btn.classList.add('wrong'); $('gate-hint').textContent = 'الإجابة الحلوة عارفاها… جرّب تاني 💞'; }
