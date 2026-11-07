@@ -396,6 +396,7 @@
         let messageIndex = 0;
         let toastTimer;
         let anniversaryTimer;
+        let fireworksTimer;
         let anniversaryIndex = 0;
         let secondChapter = false;
         const anniversaryMemories = [
@@ -412,6 +413,7 @@
         }
         function closeAnniversaryStory() {
             clearTimeout(anniversaryTimer);
+            stopFireworks();
             $('anniversary-overlay').classList.remove('active');
             $('anniversary-rewind').classList.remove('show');
             $('anniversary-memory-stage').classList.add('hidden');
@@ -521,9 +523,14 @@
                 document.body.appendChild(heart); setTimeout(() => heart.remove(), 1400);
             }
         }
+        function stopFireworks() {
+            clearInterval(fireworksTimer); fireworksTimer = null;
+            document.querySelectorAll('.firework-spark').forEach(spark => spark.remove());
+        }
         function launchFireworks() {
+            stopFireworks();
             const colors = ['#ffd166', '#ff6f91', '#9b5de5', '#a6f0ff', '#fff8ef'];
-            for (let burstIndex = 0; burstIndex < 5; burstIndex++) setTimeout(() => {
+            const createBurst = () => {
                 const originX = 12 + Math.random() * 76, originY = 18 + Math.random() * 38, color = colors[burstIndex % colors.length];
                 for (let sparkIndex = 0; sparkIndex < 20; sparkIndex++) {
                     const spark = document.createElement('span'); spark.className = 'firework-spark';
@@ -532,7 +539,10 @@
                     spark.style.setProperty('--firework-x', `${Math.cos(angle) * distance}px`); spark.style.setProperty('--firework-y', `${Math.sin(angle) * distance}px`);
                     spark.style.setProperty('--firework-color', color); document.body.appendChild(spark); setTimeout(() => spark.remove(), 1700);
                 }
-            }, burstIndex * 360);
+            };
+            let burstIndex = 0;
+            const repeatBurst = () => { createBurst(); burstIndex = (burstIndex + 1) % colors.length; };
+            repeatBurst(); fireworksTimer = setInterval(repeatBurst, 850);
         }
         function applyEffect(el) { el.classList.remove('bounce-effect'); void el.offsetWidth; el.classList.add('bounce-effect'); const r = el.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2, 5); }
         function formatTime(value) { if (!Number.isFinite(value)) return '0:00'; const mins = Math.floor(value / 60); const secs = Math.floor(value % 60).toString().padStart(2, '0'); return `${mins}:${secs}`; }
