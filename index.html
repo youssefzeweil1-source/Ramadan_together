@@ -40,6 +40,8 @@
         body.theme-ocean { --bg-one:#1d6684; --bg-two:#3159a0; --bg-three:#122b52; --purple:#54c7e8; --pink:#6c8cff; --gold:#a6f0ff; }
         body.theme-rose { --bg-one:#8e3d5a; --bg-two:#c64b73; --bg-three:#4c163d; --purple:#e78ac0; --pink:#ff7d9f; --gold:#ffd1dc; }
         body.theme-gold { --bg-one:#8a5a26; --bg-two:#9e3f34; --bg-three:#3c1d24; --purple:#e8a14c; --pink:#f47c55; --gold:#ffe29a; }
+        body.second-chapter { --night:#071b2b; --night-soft:#102f45; --bg-one:#1b6d82; --bg-two:#4267b2; --bg-three:#102b4a; --purple:#58c7e8; --pink:#7d8cff; --gold:#b8f2ff; }
+        body.second-chapter .hero { background:linear-gradient(135deg,rgba(72,191,214,.2),rgba(255,255,255,.06)); }
         body::before {
             content: '';
             position: fixed; inset: 0; pointer-events: none; z-index: -2;
@@ -164,6 +166,13 @@
         #skip-clip-btn:hover { transform:translateY(-2px); background:linear-gradient(135deg,var(--pink),var(--purple)); }
         #anniversary-overlay { position:fixed; inset:0; z-index:70; display:none; place-items:center; width:100vw; height:100dvh; overflow:hidden; padding:48px 20px 28px; background:radial-gradient(circle at 50% 18%, rgba(155,93,229,.28), transparent 38%), #090412; }
         #anniversary-overlay.active { display:grid; animation:rise .6s ease both; }
+        .anniversary-rewind { display:none; width:min(560px,100%); padding:38px 24px; text-align:center; border:1px solid rgba(255,255,255,.2); border-radius:28px; background:rgba(255,255,255,.08); box-shadow:0 28px 90px rgba(0,0,0,.42); }
+        .anniversary-rewind.show { display:block; animation:rewindIn .8s ease both; }
+        .anniversary-rewind small { color:#ffd166; font-weight:800; letter-spacing:2px; }
+        .anniversary-rewind h2 { margin:14px 0 8px; color:#fff8ef; font-family:'Caveat','Cairo',cursive; font-size:clamp(2rem,6vw,3.6rem); }
+        .anniversary-rewind p { color:#d9cce5; font-size:.9rem; }
+        .rewind-counter { margin:22px auto 0; color:#ffd166; font-size:clamp(3rem,11vw,6rem); font-weight:800; line-height:1; text-shadow:0 0 28px rgba(255,209,102,.5); animation:counterRewind 2.4s ease-in-out infinite; }
+        .anniversary-stage.hidden { display:none; }
         .anniversary-stage { width:min(760px, 100%); text-align:center; }
         .anniversary-frame { position:relative; width:min(660px, 100%); height:min(72vh, 620px); margin:auto; overflow:hidden; border:1px solid rgba(255,255,255,.32); border-radius:28px; background:#160b27; box-shadow:0 28px 90px rgba(0,0,0,.52); }
         .anniversary-frame::after { content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg, rgba(12,4,23,.08) 35%, rgba(12,4,23,.82)); }
@@ -176,10 +185,11 @@
         .anniversary-progress { display:flex; justify-content:center; gap:7px; margin-top:16px; }
         .anniversary-progress i { width:28px; height:4px; border-radius:99px; background:rgba(255,255,255,.24); transition:.3s; }
         .anniversary-progress i.active { background:linear-gradient(90deg,var(--gold),var(--pink)); box-shadow:0 0 12px rgba(255,209,102,.55); }
-        .anniversary-finale { display:none; position:absolute; inset:0; z-index:2; place-items:center; padding:30px; text-align:center; background:radial-gradient(circle, rgba(89,32,99,.92), rgba(9,4,18,.98)); }
+        .anniversary-finale { display:none; position:absolute; inset:0; z-index:2; place-items:center; padding:30px; text-align:center; background:#fffdf7; }
         .anniversary-finale.show { display:grid; animation:rise .7s ease both; }
-        .anniversary-finale h2 { max-width:620px; color:#fff8ef; font-family:'Caveat','Cairo',cursive; font-size:clamp(2.4rem,7vw,5rem); line-height:1.08; text-shadow:0 0 25px rgba(255,111,145,.45); }
-        .anniversary-finale p { margin-top:14px; color:#ffe29a; font-size:1rem; }
+        .anniversary-finale h2 { max-width:620px; color:#4a214f; font-family:'Caveat','Cairo',cursive; font-size:clamp(2.4rem,7vw,5rem); line-height:1.08; text-shadow:0 0 25px rgba(255,111,145,.25); }
+        .anniversary-finale p { margin-top:14px; color:#9b5de5; font-size:1rem; }
+        #start-second-year-btn { margin-top:24px; padding:12px 22px; border:0; border-radius:999px; background:linear-gradient(135deg,#ff6f91,#9b5de5); color:#fff; cursor:pointer; font:inherit; font-weight:800; box-shadow:0 10px 24px rgba(155,93,229,.28); }
         #skip-anniversary-btn { position:absolute; top:18px; right:18px; z-index:3; padding:9px 13px; border:1px solid rgba(255,255,255,.3); border-radius:999px; background:rgba(18,7,31,.72); color:#fff; cursor:pointer; font-size:.76rem; font-weight:700; backdrop-filter:blur(8px); }
         footer { text-align: center; color: #d5c5e0; font-size: .82rem; margin-top: 38px; }
         footer .heart { color: var(--pink); display: inline-block; animation: beat .9s infinite alternate; }
@@ -198,6 +208,10 @@
         @keyframes loveType { 0%, 10% { width: 0; } 48%, 78% { width: 12ch; } 90%, 100% { width: 0; } }
         @keyframes loveShine { from { background-position: 110% center; } to { background-position: -110% center; } }
         @keyframes memoryReveal { 0% { opacity:0; transform:scale(1.12); filter:blur(8px) saturate(.7); } 16% { opacity:1; filter:blur(0) saturate(1.1); } 100% { transform:scale(1); } }
+        @keyframes rewindIn { from { opacity:0; transform:scale(.94) translateY(16px); } to { opacity:1; transform:scale(1) translateY(0); } }
+        @keyframes counterRewind { 0%,100% { transform:translateX(0); } 25% { transform:translateX(-8px); } 50% { transform:translateX(7px); } 75% { transform:translateX(-4px); } }
+        @keyframes rewindElement { to { opacity:.08; transform:translateY(18px) scale(.97); filter:blur(5px); } }
+        body.year-rewind .shell > * { animation:rewindElement 1.7s ease both; }
         @media (max-width: 760px) {
             .shell { padding: 16px 13px 30px; }
             .hero { grid-template-columns: 1fr; padding: 28px 20px 18px; text-align: center; gap: 5px; }
@@ -248,7 +262,13 @@
         <button id="skip-clip-btn" type="button">تخطي الكليب ⏭</button>
     </div>
     <div id="anniversary-overlay" aria-label="كليب السنة الأولى">
-        <div class="anniversary-stage">
+        <div class="anniversary-rewind" id="anniversary-rewind">
+            <small>إشعار من حكايتنا ✦</small>
+            <h2>استنى… هو إحنا بقالنا سنة بجد؟</h2>
+            <p>الموقع بيرجع يفتكر كل لحظة عشناها سوا</p>
+            <div class="rewind-counter">365 يوم</div>
+        </div>
+        <div class="anniversary-stage hidden" id="anniversary-memory-stage">
             <div class="anniversary-frame" id="anniversary-frame">
                 <img id="anniversary-photo" src="media/memories/memory-01.jpg" alt="ذكرى من حكايتنا">
                 <div class="anniversary-copy">
@@ -257,7 +277,7 @@
                     <div id="anniversary-days">بعد 0 يوم من البداية</div>
                 </div>
                 <div class="anniversary-finale" id="anniversary-finale">
-                    <div><h2>سنة خلصت من حكايتنا…<br>وحبي ليكي لسه بيكبر 💖</h2><p>واللي جاي أحلى بكتير</p></div>
+                    <div><h2>السنة الأولى خلصت…<br>وحبي ليكي لسه بيكبر 💖</h2><p>متقلقيش… الذكريات مش بتتمسح، أنا بس بجهز مكان لذكريات أكتر</p><button id="start-second-year-btn" type="button">ابدأ السنة التانية</button></div>
                 </div>
             </div>
             <div class="anniversary-progress" id="anniversary-progress" aria-hidden="true"></div>
@@ -375,6 +395,8 @@
         let toastTimer;
         let anniversaryTimer;
         let anniversaryIndex = 0;
+        let secondChapter = false;
+        let secondChapterStart;
         const anniversaryMemories = [
             { src: 'media/memories/memory-01.jpg', title: 'أول صفحة في حكايتنا', days: 0 },
             { src: 'media/memories/memory-02.jpg', title: 'ضحكة خلت اليوم له معنى', days: 42 },
@@ -390,7 +412,10 @@
         function closeAnniversaryStory() {
             clearTimeout(anniversaryTimer);
             $('anniversary-overlay').classList.remove('active');
+            $('anniversary-rewind').classList.remove('show');
+            $('anniversary-memory-stage').classList.add('hidden');
             $('anniversary-finale').classList.remove('show');
+            document.body.classList.remove('year-rewind');
             document.body.style.overflow = '';
         }
         function showAnniversaryFinale() {
@@ -421,8 +446,28 @@
             anniversaryIndex = 0;
             $('anniversary-overlay').classList.add('active');
             $('anniversary-finale').classList.remove('show');
+            $('anniversary-memory-stage').classList.add('hidden');
+            $('anniversary-rewind').classList.add('show');
+            document.body.classList.add('year-rewind');
             document.body.style.overflow = 'hidden';
-            showAnniversaryMemory(anniversaryIndex);
+            anniversaryTimer = setTimeout(() => {
+                document.body.classList.remove('year-rewind');
+                $('anniversary-rewind').classList.remove('show');
+                $('anniversary-memory-stage').classList.remove('hidden');
+                showAnniversaryMemory(anniversaryIndex);
+            }, 4300);
+        }
+        function startSecondYear() {
+            closeAnniversaryStory();
+            secondChapter = true;
+            secondChapterStart = new Date();
+            document.body.classList.add('second-chapter');
+            $('pageTitle').innerHTML = 'الفصل الثاني<br><span style="color:var(--gold)">لسه الحكاية بتبدأ</span>';
+            document.querySelector('.hero-copy').textContent = 'السنة الأولى كانت أجمل فصل، بس الحكاية لسه فيها صفحات كتير هنكتبها سوا.';
+            document.querySelector('.date-badge').innerHTML = '✨ الفصل الثاني <span>•</span> من هنا بنبدأ';
+            $('dynamic-message').textContent = 'الرسائل القديمة اختفت لحظة… بس الذكريات لسه هنا وبتكبر معانا 💛';
+            updateTimer();
+            showToast('الفصل الثاني بدأ… ولسه أجمل أيامنا جاية 💞');
         }
         function celebrateIfDue() {
             const now = new Date();
@@ -430,9 +475,11 @@
             if (anniversaryToday) setTimeout(startAnniversaryStory, 900);
         }
         function setMessage(next = true) {
-            messageIndex = next ? (messageIndex + 1) % messages.length : Math.floor(Math.random() * messages.length);
+            const chapterMessages = ['الفصل التاني لسه بيكتب أول سطر 💙', 'أيامنا الجاية هتخبي لنا مفاجآت أحلى', 'كل صفحة جديدة هتكون بيكي أجمل'];
+            const activeMessages = secondChapter ? chapterMessages : messages;
+            messageIndex = next ? (messageIndex + 1) % activeMessages.length : Math.floor(Math.random() * activeMessages.length);
             $('dynamic-message').animate([{ opacity: .2, transform: 'translateY(5px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 280, easing: 'ease-out' });
-            $('dynamic-message').textContent = messages[messageIndex];
+            $('dynamic-message').textContent = activeMessages[messageIndex];
         }
         function unitDiff(from, to) {
             let years = to.getFullYear() - from.getFullYear();
@@ -445,7 +492,15 @@
         }
         function renderUnit(name, value) { $(name).textContent = value; }
         function updateTimer() {
-            const now = new Date(), before = now < startDate;
+            const now = new Date();
+            if (secondChapter) {
+                const values = unitDiff(secondChapterStart, now);
+                $('statusText').textContent = '💞 أيامنا الجاية';
+                ['years','months','days','hours','minutes','seconds'].forEach(name => renderUnit(name, values[name]));
+                $('todayLabel').textContent = 'الفصل الثاني • ' + new Intl.DateTimeFormat('ar-EG', { dateStyle: 'full' }).format(now);
+                return;
+            }
+            const before = now < startDate;
             const values = before ? unitDiff(now, startDate) : unitDiff(startDate, now);
             $('statusText').textContent = before ? '⏳ فاضل على البداية' : '💗 مرّ على بدايتنا';
             ['years','months','days','hours','minutes','seconds'].forEach(name => renderUnit(name, values[name]));
@@ -522,6 +577,7 @@
         $('memory-clip').addEventListener('click', () => { const clip = $('memory-clip'); if (clip.paused) clip.play(); });
         $('skip-clip-btn').addEventListener('click', finishStory);
         $('skip-anniversary-btn').addEventListener('click', closeAnniversaryStory);
+        $('start-second-year-btn').addEventListener('click', startSecondYear);
         document.querySelectorAll('.answer-btn').forEach(btn => btn.addEventListener('click', () => {
             if (btn.dataset.answer === 'both') { burst(innerWidth / 2, innerHeight / 2, 28); unlockStory(); }
             else { btn.classList.remove('wrong'); void btn.offsetWidth; btn.classList.add('wrong'); $('gate-hint').textContent = 'الإجابة الحلوة عارفاها… جرّب تاني 💞'; }
