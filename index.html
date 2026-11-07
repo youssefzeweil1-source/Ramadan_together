@@ -17,6 +17,9 @@
             --pink: #ff6f91;
             --gold: #ffd166;
             --cream: #fff8ef;
+            --bg-one: #634087;
+            --bg-two: #9d3f68;
+            --bg-three: #321d54;
             --glass: rgba(255,255,255,.12);
             --glass-border: rgba(255,255,255,.23);
             --shadow: 0 28px 90px rgba(10, 3, 25, .42);
@@ -30,10 +33,13 @@
             font-family: 'Cairo', sans-serif;
             background: radial-gradient(circle at 12% 10%, #634087 0, transparent 30%),
                         radial-gradient(circle at 90% 15%, #9d3f68 0, transparent 27%),
-                        linear-gradient(135deg, var(--night), #321d54 55%, #631f4c);
+                        linear-gradient(135deg, var(--night), var(--bg-three) 55%, #631f4c);
             overflow-x: hidden;
             isolation: isolate;
         }
+        body.theme-ocean { --bg-one:#1d6684; --bg-two:#3159a0; --bg-three:#122b52; --purple:#54c7e8; --pink:#6c8cff; --gold:#a6f0ff; }
+        body.theme-rose { --bg-one:#8e3d5a; --bg-two:#c64b73; --bg-three:#4c163d; --purple:#e78ac0; --pink:#ff7d9f; --gold:#ffd1dc; }
+        body.theme-gold { --bg-one:#8a5a26; --bg-two:#9e3f34; --bg-three:#3c1d24; --purple:#e8a14c; --pink:#f47c55; --gold:#ffe29a; }
         body::before {
             content: '';
             position: fixed; inset: 0; pointer-events: none; z-index: -2;
@@ -58,6 +64,9 @@
         .icon-btn:hover, .ghost-btn:hover, .primary-btn:hover { transform: translateY(-2px); border-color: rgba(255,255,255,.5); }
         .icon-btn[aria-pressed="true"] { background: linear-gradient(135deg, var(--pink), var(--purple)); }
         .hero { display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 34px; padding: 40px; border: 1px solid var(--glass-border); border-radius: 34px; background: linear-gradient(135deg, rgba(255,255,255,.15), rgba(255,255,255,.05)); box-shadow: var(--shadow); backdrop-filter: blur(20px); animation: rise .9s .1s ease both; }
+        #sky-layer { position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden; }
+        .sky-star { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; box-shadow: 0 0 7px rgba(255,255,255,.95); animation: starShimmer var(--twinkle, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); }
+        .sky-star.big { width: 4px; height: 4px; background: var(--gold); }
         .eyebrow { color: var(--gold); font-size: .78rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
         h1 { font-family: 'Playfair Display', 'Cairo', serif; font-size: clamp(2.25rem, 6vw, 4.8rem); line-height: 1.12; margin-bottom: 15px; text-wrap: balance; }
         .hero-copy { color: #eadff4; line-height: 1.9; max-width: 560px; }
@@ -103,7 +112,33 @@
         .primary-btn, .ghost-btn { border-radius: 14px; padding: 11px 17px; font-weight: 700; }
         .primary-btn { background: linear-gradient(135deg, var(--pink), var(--purple)); box-shadow: 0 10px 24px rgba(255,111,145,.22); }
         .ghost-btn { background: rgba(255,255,255,.08); }
-        .music-wrap { display: none; }
+        .pro-player { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 13px; margin: 25px auto 0; padding: 13px 15px; width: min(560px, 100%); border: 1px solid var(--glass-border); border-radius: 20px; background: rgba(13,7,27,.4); }
+        .player-play { display:grid; place-items:center; width:46px; height:46px; border:0; border-radius:50%; background:linear-gradient(135deg,var(--pink),var(--purple)); color:#fff; cursor:pointer; font-size:1.1rem; }
+        .player-meta { min-width:0; text-align:right; }
+        .player-meta strong { display:block; font-size:.82rem; }
+        .player-meta small { display:block; color:#cfc0dc; font-size:.68rem; margin-top:2px; }
+        .player-progress { width:100%; accent-color:var(--pink); cursor:pointer; }
+        .player-time { display:flex; justify-content:space-between; direction:ltr; color:#cfc0dc; font-size:.65rem; margin-top:2px; }
+        .volume-control { width:75px; accent-color:var(--gold); }
+        .theme-panel { position:fixed; top:75px; left:18px; z-index:15; display:none; padding:12px; width:190px; border:1px solid var(--glass-border); border-radius:18px; background:rgba(20,10,37,.94); box-shadow:var(--shadow); backdrop-filter:blur(16px); }
+        .theme-panel.open { display:block; animation:rise .25s ease both; }
+        .theme-panel strong { display:block; font-size:.78rem; margin-bottom:9px; color:var(--gold); }
+        .theme-list { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; }
+        .theme-swatch { width:32px; height:32px; border:2px solid transparent; border-radius:11px; cursor:pointer; }
+        .theme-swatch.active { border-color:#fff; box-shadow:0 0 0 2px var(--pink); }
+        #welcome-message { position:fixed; top:22px; left:50%; z-index:30; transform:translate(-50%,-20px); opacity:0; padding:13px 20px; border:1px solid rgba(255,255,255,.3); border-radius:16px; background:rgba(39,17,58,.9); box-shadow:var(--shadow); color:#fff3d4; font-size:.88rem; font-weight:700; transition:.45s; pointer-events:none; }
+        #welcome-message.show { opacity:1; transform:translate(-50%,0); }
+        #gate-overlay { position:fixed; inset:0; z-index:50; display:grid; place-items:center; padding:20px; background:radial-gradient(circle at 50% 25%, rgba(155,93,229,.28), transparent 32%), rgba(9,4,19,.92); backdrop-filter:blur(13px); }
+        .gate-card { width:min(510px,100%); padding:32px 24px; text-align:center; border:1px solid var(--glass-border); border-radius:30px; background:linear-gradient(145deg,rgba(255,255,255,.15),rgba(255,255,255,.06)); box-shadow:var(--shadow); animation:rise .7s ease both; }
+        .gate-card .gate-heart { display:block; font-size:2.6rem; margin-bottom:10px; animation:beat .9s infinite alternate; }
+        .gate-card h2 { font-family:'Playfair Display','Cairo',serif; font-size:clamp(1.7rem,5vw,2.3rem); margin-bottom:8px; }
+        .gate-card p { color:#d9cce5; line-height:1.8; font-size:.86rem; margin-bottom:20px; }
+        .answer-list { display:grid; gap:10px; }
+        .answer-btn { padding:13px 16px; border:1px solid rgba(255,255,255,.2); border-radius:15px; background:rgba(255,255,255,.09); color:#fff; cursor:pointer; font-weight:700; transition:.22s; }
+        .answer-btn:hover { transform:translateY(-2px); background:rgba(255,255,255,.17); border-color:var(--gold); }
+        .answer-btn.wrong { animation:shake .38s ease; border-color:#ff7d9f; background:rgba(255,70,105,.18); }
+        body.gate-open #gate-overlay { animation:gateOut .65s ease forwards; pointer-events:none; }
+        body.gate-open { overflow:auto; }
         footer { text-align: center; color: #d5c5e0; font-size: .82rem; margin-top: 38px; }
         footer .heart { color: var(--pink); display: inline-block; animation: beat .9s infinite alternate; }
         .toast { position: fixed; left: 50%; bottom: 24px; z-index: 20; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; padding: 11px 17px; border-radius: 999px; background: #fff8ef; color: #351941; font-size: .82rem; font-weight: 700; box-shadow: 0 12px 35px rgba(0,0,0,.3); transition: .3s; }
@@ -112,6 +147,9 @@
         @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes float { 50% { transform: translateY(-12px) rotate(3deg); } }
         @keyframes twinkle { 50% { opacity: .25; transform: scale(.7); } }
+        @keyframes starShimmer { 50% { opacity:.25; transform:scale(.65); } }
+        @keyframes shake { 25% { transform:translateX(7px); } 50% { transform:translateX(-7px); } 75% { transform:translateX(4px); } }
+        @keyframes gateOut { to { opacity:0; visibility:hidden; transform:scale(1.04); } }
         @keyframes bounce { 50% { transform: scale(1.08); } }
         @keyframes beat { to { transform: scale(1.35); } }
         @keyframes fly { 0% { opacity: 1; transform: translate(0,0) scale(.7) rotate(0); } 100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(1.5) rotate(35deg); } }
@@ -141,14 +179,30 @@
     </style>
 </head>
 <body>
+    <div id="sky-layer" aria-hidden="true"></div>
+    <div id="welcome-message">وجودك هنا هو أجمل جزء في يومي 💛</div>
+    <div id="gate-overlay">
+        <section class="gate-card" aria-labelledby="gateTitle">
+            <span class="gate-heart">💖</span>
+            <h2 id="gateTitle">قبل ما ندخل الحكاية…</h2>
+            <p>جاوب السؤال ده عشان نفتح أحلى لحظة ونشغّل الأغنية مخصوص ليكي.</p>
+            <div class="answer-list">
+                <button class="answer-btn" type="button" data-answer="youssef">يوسف</button>
+                <button class="answer-btn" type="button" data-answer="toti">توتي</button>
+                <button class="answer-btn" type="button" data-answer="both">إحنا الاتنين 💞</button>
+            </div>
+            <small id="gate-hint" style="display:block;color:#ffb7ca;min-height:22px;margin-top:13px;font-size:.72rem"></small>
+        </section>
+    </div>
     <main class="shell">
         <header class="topbar">
             <div class="brand"><span class="brand-mark">☾</span><div>حكايتنا <small>لحظة حلوة تستاهل تتوثق</small></div></div>
             <div class="quick-actions">
                 <button class="icon-btn" id="soundBtn" type="button" aria-label="تشغيل الموسيقى" aria-pressed="false">🔇</button>
-                <button class="icon-btn" id="calmBtn" type="button" aria-label="تفعيل الوضع الهادئ" aria-pressed="false">✨</button>
+                <button class="icon-btn" id="calmBtn" type="button" aria-label="تبديل الثيمات" aria-pressed="false">🎨</button>
             </div>
         </header>
+        <div class="theme-panel" id="themePanel" aria-label="اختيار الثيم"><strong>اختاروا مود الحكاية</strong><div class="theme-list" id="themeList"></div></div>
 
         <section class="hero" aria-labelledby="pageTitle">
             <div>
@@ -200,6 +254,11 @@
             <button class="ghost-btn" id="heartBtn" type="button">❤ ابعت حب</button>
             <button class="ghost-btn" id="fullscreenBtn" type="button">⛶ ملء الشاشة</button>
         </div>
+        <section class="pro-player" aria-label="مشغل الأغنية">
+            <button class="player-play" id="playerPlay" type="button" aria-label="تشغيل الأغنية">▶</button>
+            <div class="player-meta"><strong>أغنيتنا الخاصة 🎶</strong><small id="playerStatus">اضغط تشغيل وعيشوا اللحظة</small><input class="player-progress" id="playerProgress" type="range" min="0" max="100" value="0" aria-label="تقدم الأغنية"><div class="player-time"><span id="currentTime">0:00</span><span id="duration">0:00</span></div></div>
+            <input class="volume-control" id="volumeControl" type="range" min="0" max="1" step=".01" value=".8" aria-label="مستوى الصوت">
+        </section>
         <footer>ربنا يكتبك ليا <span class="heart">❤</span> وكل سنة وحكايتنا أحلى</footer>
     </main>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -214,6 +273,7 @@
             'لسه أجمل أيامنا جاية… وأنا متأكد 💛'
         ];
         const $ = id => document.getElementById(id);
+        const music = $('music');
         let messageIndex = 0;
         let toastTimer;
 
@@ -252,13 +312,63 @@
             }
         }
         function applyEffect(el) { el.classList.remove('bounce-effect'); void el.offsetWidth; el.classList.add('bounce-effect'); const r = el.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2, 5); }
+        function formatTime(value) { if (!Number.isFinite(value)) return '0:00'; const mins = Math.floor(value / 60); const secs = Math.floor(value % 60).toString().padStart(2, '0'); return `${mins}:${secs}`; }
+        function syncPlayer() {
+            const playing = !music.paused;
+            $('playerPlay').textContent = playing ? '❚❚' : '▶';
+            $('soundBtn').textContent = playing ? '🔊' : '🔇';
+            $('soundBtn').setAttribute('aria-pressed', String(playing));
+            $('playerStatus').textContent = playing ? 'الأغنية شغالة… خلو اللحظة تكمل 🎶' : 'اضغط تشغيل وعيشوا اللحظة';
+        }
+        function buildSky() {
+            const sky = $('sky-layer');
+            for (let i = 0; i < 78; i++) {
+                const star = document.createElement('span'); star.className = `sky-star${i % 13 === 0 ? ' big' : ''}`;
+                star.style.left = `${Math.random() * 100}%`; star.style.top = `${Math.random() * 100}%`;
+                star.style.setProperty('--twinkle', `${2 + Math.random() * 4}s`); star.style.setProperty('--delay', `${Math.random() * -5}s`); sky.appendChild(star);
+            }
+        }
+        const themes = [
+            { id: 'default', label: 'ليلي', color: 'linear-gradient(135deg,#321d54,#9d3f68)' },
+            { id: 'ocean', label: 'محيط', color: 'linear-gradient(135deg,#122b52,#54c7e8)' },
+            { id: 'rose', label: 'وردي', color: 'linear-gradient(135deg,#4c163d,#ff7d9f)' },
+            { id: 'gold', label: 'ذهبي', color: 'linear-gradient(135deg,#3c1d24,#e8a14c)' }
+        ];
+        function setTheme(id) {
+            themes.forEach(theme => document.body.classList.toggle(`theme-${theme.id}`, theme.id === id && theme.id !== 'default'));
+            localStorage.setItem('story-theme', id); document.querySelectorAll('.theme-swatch').forEach(btn => btn.classList.toggle('active', btn.dataset.theme === id));
+        }
+        function buildThemes() {
+            const list = $('themeList'); list.innerHTML = '';
+            const saved = localStorage.getItem('story-theme') || 'default';
+            themes.forEach(theme => { const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'theme-swatch'; btn.dataset.theme = theme.id; btn.title = theme.label; btn.setAttribute('aria-label', theme.label); btn.style.background = theme.color; btn.addEventListener('click', () => { setTheme(theme.id); $('themePanel').classList.remove('open'); showToast(`ثيم ${theme.label} اتفعل ✨`); }); list.appendChild(btn); });
+            setTheme(saved);
+        }
+        function unlockStory() {
+            document.body.classList.add('gate-open');
+            setTimeout(() => $('welcome-message').classList.add('show'), 520);
+            setTimeout(() => $('welcome-message').classList.remove('show'), 4200);
+            music.volume = Number($('volumeControl').value);
+            music.play().then(syncPlayer).catch(syncPlayer);
+        }
         document.querySelectorAll('.time-unit').forEach(unit => { unit.addEventListener('click', () => applyEffect(unit)); unit.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); applyEffect(unit); } }); });
+        document.querySelectorAll('.answer-btn').forEach(btn => btn.addEventListener('click', () => {
+            if (btn.dataset.answer === 'both') { burst(innerWidth / 2, innerHeight / 2, 28); unlockStory(); }
+            else { btn.classList.remove('wrong'); void btn.offsetWidth; btn.classList.add('wrong'); $('gate-hint').textContent = 'الإجابة الحلوة عارفاها… جرّب تاني 💞'; }
+        }));
         $('newMessageBtn').addEventListener('click', () => setMessage());
         $('heartBtn').addEventListener('click', e => { const r = e.currentTarget.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2, 18); showToast('وصلت أحلى جرعة حب 💖'); });
         $('shareBtn').addEventListener('click', async () => { const text = 'حكايتنا بدأت في 8 نوفمبر 2025 💛'; try { if (navigator.share) await navigator.share({ title: 'حكايتنا', text, url: location.href }); else { await navigator.clipboard.writeText(location.href); showToast('اتنسخ لينك الحكاية ✨'); } } catch (_) {} });
         $('fullscreenBtn').addEventListener('click', async () => { try { if (!document.fullscreenElement) await document.documentElement.requestFullscreen(); else await document.exitFullscreen(); } catch (_) { showToast('ملء الشاشة غير متاح على المتصفح ده'); } });
-        $('soundBtn').addEventListener('click', async () => { const music = $('music'); try { if (music.paused) { await music.play(); $('soundBtn').textContent = '🔊'; $('soundBtn').setAttribute('aria-pressed', 'true'); showToast('الموسيقى اشتغلت 🎶'); } else { music.pause(); $('soundBtn').textContent = '🔇'; $('soundBtn').setAttribute('aria-pressed', 'false'); } } catch (_) { showToast('اضغط مرة تانية لتشغيل الموسيقى'); } });
-        $('calmBtn').addEventListener('click', e => { document.body.classList.toggle('calm'); const calm = document.body.classList.contains('calm'); document.querySelectorAll('.heart-particle').forEach(x => x.remove()); e.currentTarget.textContent = calm ? '🌙' : '✨'; e.currentTarget.setAttribute('aria-pressed', String(calm)); showToast(calm ? 'الوضع الهادئ اتفعل 🌙' : 'رجعنا للحيوية ✨'); });
+        $('soundBtn').addEventListener('click', async () => { try { if (music.paused) { await music.play(); showToast('الموسيقى اشتغلت 🎶'); } else music.pause(); syncPlayer(); } catch (_) { showToast('اضغط مرة تانية لتشغيل الموسيقى'); } });
+        $('calmBtn').addEventListener('click', () => $('themePanel').classList.toggle('open'));
+        $('playerPlay').addEventListener('click', async () => { try { if (music.paused) await music.play(); else music.pause(); syncPlayer(); } catch (_) { showToast('اضغط مرة تانية لتشغيل الموسيقى'); } });
+        $('playerProgress').addEventListener('input', e => { if (music.duration) music.currentTime = (Number(e.target.value) / 100) * music.duration; });
+        $('volumeControl').addEventListener('input', e => { music.volume = Number(e.target.value); });
+        music.addEventListener('loadedmetadata', () => $('duration').textContent = formatTime(music.duration));
+        music.addEventListener('timeupdate', () => { $('currentTime').textContent = formatTime(music.currentTime); $('playerProgress').value = music.duration ? (music.currentTime / music.duration) * 100 : 0; });
+        music.addEventListener('play', syncPlayer); music.addEventListener('pause', syncPlayer);
+        buildSky(); buildThemes();
         setMessage(false); updateTimer(); setInterval(updateTimer, 1000);
     </script>
 </body>
