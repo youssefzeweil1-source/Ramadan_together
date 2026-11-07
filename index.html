@@ -495,6 +495,7 @@
         function renderUnit(name, value) { $(name).textContent = value; }
         function updateTimer() {
             const now = new Date();
+            if (previewAnniversary && !secondChapter) return;
             if (secondChapter) {
                 const values = unitDiff(startDate, now);
                 $('statusText').textContent = '💞 أيامنا الجاية';
