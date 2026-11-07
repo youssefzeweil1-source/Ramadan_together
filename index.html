@@ -196,6 +196,7 @@
         .toast { position: fixed; left: 50%; bottom: 24px; z-index: 20; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; padding: 11px 17px; border-radius: 999px; background: #fff8ef; color: #351941; font-size: .82rem; font-weight: 700; box-shadow: 0 12px 35px rgba(0,0,0,.3); transition: .3s; }
         .toast.show { opacity: 1; transform: translate(-50%, 0); }
         .heart-particle { position: fixed; z-index: 10; pointer-events: none; color: var(--pink); animation: fly 1.3s ease-out forwards; }
+        .firework-spark { position:fixed; z-index:80; width:4px; height:4px; border-radius:50%; pointer-events:none; background:var(--firework-color,var(--gold)); box-shadow:0 0 9px 2px var(--firework-color,var(--gold)); animation:fireworkBurst 1.45s cubic-bezier(.12,.78,.24,1) forwards; }
         @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes float { 50% { transform: translateY(-12px) rotate(3deg); } }
         @keyframes twinkle { 50% { opacity: .25; transform: scale(.7); } }
@@ -205,6 +206,7 @@
         @keyframes bounce { 50% { transform: scale(1.08); } }
         @keyframes beat { to { transform: scale(1.35); } }
         @keyframes fly { 0% { opacity: 1; transform: translate(0,0) scale(.7) rotate(0); } 100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(1.5) rotate(35deg); } }
+        @keyframes fireworkBurst { 0% { opacity:0; transform:translate(0,0) scale(.4); } 12% { opacity:1; } 100% { opacity:0; transform:translate(var(--firework-x),var(--firework-y)) scale(.1); } }
         @keyframes loveType { 0%, 10% { width: 0; } 48%, 78% { width: 12ch; } 90%, 100% { width: 0; } }
         @keyframes loveShine { from { background-position: 110% center; } to { background-position: -110% center; } }
         @keyframes memoryReveal { 0% { opacity:0; transform:scale(1.12); filter:blur(8px) saturate(.7); } 16% { opacity:1; filter:blur(0) saturate(1.1); } 100% { transform:scale(1); } }
@@ -437,8 +439,10 @@
                 else showAnniversaryFinale();
             }, 5200);
         }
-        function startAnniversaryStory() {
-            const year = new Date().getFullYear();
+        function startAnniversaryStory(storyYear) {
+            const now = new Date(), thisYearAnniversary = new Date(startDate);
+            thisYearAnniversary.setFullYear(now.getFullYear());
+            const year = storyYear || (now >= thisYearAnniversary ? now.getFullYear() : now.getFullYear() - 1);
             const storyKey = `anniversary-story-${year}`;
             if (localStorage.getItem(storyKey) === 'played') return;
             localStorage.setItem(storyKey, 'played');
@@ -449,6 +453,7 @@
             $('anniversary-rewind').classList.add('show');
             document.body.classList.add('year-rewind');
             document.body.style.overflow = 'hidden';
+            launchFireworks();
             anniversaryTimer = setTimeout(() => {
                 document.body.classList.remove('year-rewind');
                 $('anniversary-rewind').classList.remove('show');
@@ -469,8 +474,12 @@
         }
         function celebrateIfDue() {
             const now = new Date();
-            const anniversaryToday = now.getFullYear() > startDate.getFullYear() && now.getMonth() === startDate.getMonth() && now.getDate() === startDate.getDate();
-            if (anniversaryToday) setTimeout(startAnniversaryStory, 900);
+            const thisYearAnniversary = new Date(startDate); thisYearAnniversary.setFullYear(now.getFullYear());
+            const anniversaryYear = now >= thisYearAnniversary ? now.getFullYear() : now.getFullYear() - 1;
+            if (anniversaryYear <= startDate.getFullYear()) return;
+            const anniversaryDate = new Date(startDate); anniversaryDate.setFullYear(anniversaryYear);
+            const storyKey = `anniversary-story-${anniversaryYear}`;
+            if (now >= anniversaryDate && localStorage.getItem(storyKey) !== 'played') setTimeout(() => startAnniversaryStory(anniversaryYear), 900);
         }
         function setMessage(next = true) {
             const chapterMessages = ['الفصل التاني لسه بيكتب أول سطر 💙', 'أيامنا الجاية هتخبي لنا مفاجآت أحلى', 'كل صفحة جديدة هتكون بيكي أجمل'];
@@ -511,6 +520,19 @@
                 heart.style.setProperty('--x', `${(Math.random() - .5) * 180}px`); heart.style.setProperty('--y', `${-40 - Math.random() * 150}px`);
                 document.body.appendChild(heart); setTimeout(() => heart.remove(), 1400);
             }
+        }
+        function launchFireworks() {
+            const colors = ['#ffd166', '#ff6f91', '#9b5de5', '#a6f0ff', '#fff8ef'];
+            for (let burstIndex = 0; burstIndex < 5; burstIndex++) setTimeout(() => {
+                const originX = 12 + Math.random() * 76, originY = 18 + Math.random() * 38, color = colors[burstIndex % colors.length];
+                for (let sparkIndex = 0; sparkIndex < 20; sparkIndex++) {
+                    const spark = document.createElement('span'); spark.className = 'firework-spark';
+                    const angle = (Math.PI * 2 * sparkIndex) / 20, distance = 55 + Math.random() * 105;
+                    spark.style.left = `${originX}%`; spark.style.top = `${originY}%`;
+                    spark.style.setProperty('--firework-x', `${Math.cos(angle) * distance}px`); spark.style.setProperty('--firework-y', `${Math.sin(angle) * distance}px`);
+                    spark.style.setProperty('--firework-color', color); document.body.appendChild(spark); setTimeout(() => spark.remove(), 1700);
+                }
+            }, burstIndex * 360);
         }
         function applyEffect(el) { el.classList.remove('bounce-effect'); void el.offsetWidth; el.classList.add('bounce-effect'); const r = el.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2, 5); }
         function formatTime(value) { if (!Number.isFinite(value)) return '0:00'; const mins = Math.floor(value / 60); const secs = Math.floor(value % 60).toString().padStart(2, '0'); return `${mins}:${secs}`; }
