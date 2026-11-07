@@ -121,6 +121,7 @@
         .voice-memory-copy strong { display:block; font-size:.88rem; }
         .voice-memory-copy small { display:block; color:#cfc0dc; font-size:.7rem; margin-top:3px; }
         .voice-memory audio { width:100%; height:34px; margin-top:9px; accent-color:var(--pink); }
+        .voice-memory + .voice-memory { margin-top:10px; }
         .controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 28px; }
         .primary-btn, .ghost-btn { border-radius: 14px; padding: 11px 17px; font-weight: 700; }
         .primary-btn { background: linear-gradient(135deg, var(--pink), var(--purple)); box-shadow: 0 10px 24px rgba(255,111,145,.22); }
@@ -286,6 +287,10 @@
         <div class="voice-memory">
             <div class="voice-memory-icon">🎙️</div>
             <div class="voice-memory-copy"><strong>رسالة صوتية من القلب</strong><small>شغّلها لما تحب تسمع صوت الحكاية</small><audio controls preload="metadata" src="media/voice-message.mp3"></audio></div>
+        </div>
+        <div class="voice-memory">
+            <div class="voice-memory-icon">💌</div>
+            <div class="voice-memory-copy"><strong>رسالة صوتية تانية</strong><small>كلمة إضافية مخصوصة ليكي</small><audio controls preload="metadata" src="media/voice-message-02.mp3"></audio></div>
         </div>
 
         <div class="controls">
