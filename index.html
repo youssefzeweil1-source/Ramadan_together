@@ -108,6 +108,19 @@
         .memory::before { content: '✦'; position: absolute; top: 15px; left: 18px; color: rgba(255,255,255,.75); font-size: 2rem; }
         .memory b { font-size: 1rem; }
         .memory span { color: #eaddec; font-size: .76rem; margin-top: 4px; }
+        .media-gallery { display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; }
+        .media-photo { position:relative; min-height:150px; overflow:hidden; border:1px solid rgba(255,255,255,.18); border-radius:18px; background:linear-gradient(145deg,rgba(255,111,145,.32),rgba(47,24,73,.9)); }
+        .media-photo img { width:100%; height:100%; min-height:150px; display:block; object-fit:cover; transition:transform .35s ease, filter .35s ease; }
+        .media-photo:hover img { transform:scale(1.08); filter:brightness(1.12); }
+        .media-photo::after { content:'ذكرى ✦'; position:absolute; right:9px; bottom:8px; padding:3px 8px; border-radius:999px; background:rgba(12,5,25,.65); color:#fff; font-size:.65rem; pointer-events:none; }
+        .video-gallery { display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; }
+        .memory-video { width:100%; aspect-ratio:9/14; display:block; object-fit:cover; border:1px solid rgba(255,255,255,.18); border-radius:18px; background:#160c27; box-shadow:0 10px 22px rgba(0,0,0,.18); }
+        .voice-memory { display:flex; align-items:center; gap:15px; margin-top:14px; padding:16px 18px; border:1px solid rgba(255,255,255,.18); border-radius:20px; background:rgba(255,255,255,.08); }
+        .voice-memory-icon { display:grid; place-items:center; width:44px; height:44px; flex:0 0 44px; border-radius:15px; background:linear-gradient(135deg,var(--pink),var(--purple)); font-size:1.25rem; }
+        .voice-memory-copy { min-width:0; flex:1; }
+        .voice-memory-copy strong { display:block; font-size:.88rem; }
+        .voice-memory-copy small { display:block; color:#cfc0dc; font-size:.7rem; margin-top:3px; }
+        .voice-memory audio { width:100%; height:34px; margin-top:9px; accent-color:var(--pink); }
         .controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 28px; }
         .primary-btn, .ghost-btn { border-radius: 14px; padding: 11px 17px; font-weight: 700; }
         .primary-btn { background: linear-gradient(135deg, var(--pink), var(--purple)); box-shadow: 0 10px 24px rgba(255,111,145,.22); }
@@ -163,6 +176,8 @@
             .moon-ring { width: 195px; height: 195px; }
             .timer-grid { grid-template-columns: repeat(3, 1fr); }
             .features, .memory-strip { grid-template-columns: 1fr; }
+            .media-gallery, .video-gallery { grid-template-columns:repeat(2, 1fr); }
+            .media-photo:last-child, .memory-video:last-child { grid-column:span 2; max-height:280px; aspect-ratio:16/10; }
             .feature-card { display: grid; grid-template-columns: auto 1fr; column-gap: 12px; align-items: start; }
             .feature-icon { grid-row: span 2; margin: 0; }
             .feature-card p { grid-column: 2; }
@@ -174,6 +189,7 @@
             .time-unit { padding: 13px 4px 10px; }
             .note-box { grid-template-columns: auto 1fr; }
             .note-box button { grid-column: 2; justify-self: end; margin-top: -24px; }
+            .media-gallery, .video-gallery { gap:8px; }
         }
         @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }
     </style>
@@ -248,6 +264,29 @@
             <article class="memory"><b>ضحكتنا المفضلة</b><span>في حاجات صغيرة بتخلّي اليوم كله أحلى</span></article>
             <article class="memory"><b>اللي جاي أجمل</b><span>لسه بنكتب أحلى فصل بإيدينا 💛</span></article>
         </section>
+
+        <div class="section-title"><h2>صورنا الحلوة</h2><span>خمس لحظات تستاهل تفضل</span></div>
+        <section class="media-gallery" aria-label="صور الذكريات">
+            <a class="media-photo" href="media/memories/memory-01.jpg" target="_blank" rel="noopener"><img src="media/memories/memory-01.jpg" alt="الذكرى الأولى" loading="lazy"></a>
+            <a class="media-photo" href="media/memories/memory-02.jpg" target="_blank" rel="noopener"><img src="media/memories/memory-02.jpg" alt="الذكرى الثانية" loading="lazy"></a>
+            <a class="media-photo" href="media/memories/memory-03.jpg" target="_blank" rel="noopener"><img src="media/memories/memory-03.jpg" alt="الذكرى الثالثة" loading="lazy"></a>
+            <a class="media-photo" href="media/memories/memory-04.jpg" target="_blank" rel="noopener"><img src="media/memories/memory-04.jpg" alt="الذكرى الرابعة" loading="lazy"></a>
+            <a class="media-photo" href="media/memories/memory-05.jpg" target="_blank" rel="noopener"><img src="media/memories/memory-05.jpg" alt="الذكرى الخامسة" loading="lazy"></a>
+        </section>
+
+        <div class="section-title"><h2>لحظات متحركة</h2><span>خمس فيديوهات من الحكاية</span></div>
+        <section class="video-gallery" aria-label="فيديوهات الذكريات">
+            <video class="memory-video" controls preload="metadata" playsinline src="media/videos/memory-video-01.mp4"></video>
+            <video class="memory-video" controls preload="metadata" playsinline src="media/videos/memory-video-02.mp4"></video>
+            <video class="memory-video" controls preload="metadata" playsinline src="media/videos/memory-video-03.mp4"></video>
+            <video class="memory-video" controls preload="metadata" playsinline src="media/videos/memory-video-04.mp4"></video>
+            <video class="memory-video" controls preload="metadata" playsinline src="media/videos/memory-video-05.mp4"></video>
+        </section>
+
+        <div class="voice-memory">
+            <div class="voice-memory-icon">🎙️</div>
+            <div class="voice-memory-copy"><strong>رسالة صوتية من القلب</strong><small>شغّلها لما تحب تسمع صوت الحكاية</small><audio controls preload="metadata" src="media/voice-message.mp3"></audio></div>
+        </div>
 
         <div class="controls">
             <button class="primary-btn" id="shareBtn" type="button">↗ شارك الحكاية</button>
