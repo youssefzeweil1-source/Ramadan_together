@@ -276,7 +276,6 @@
                 <div class="anniversary-copy">
                     <div class="anniversary-kicker">من يوم البداية لحد النهارده ✨</div>
                     <div id="anniversary-caption">أول صفحة في حكايتنا</div>
-                    <div id="anniversary-days">بعد 0 يوم من البداية</div>
                 </div>
                 <div class="anniversary-finale" id="anniversary-finale">
                     <div><h2>السنة الأولى خلصت…<br>وحبي ليكي لسه بيكبر 💖</h2><p>متقلقيش… الذكريات مش بتتمسح، أنا بس بجهز مكان لذكريات أكتر</p><button id="start-second-year-btn" type="button">ابدأ السنة التانية</button></div>
@@ -433,7 +432,6 @@
             $('anniversary-photo').src = memory.src;
             $('anniversary-photo').alt = memory.title;
             $('anniversary-caption').textContent = memory.title;
-            $('anniversary-days').textContent = `بعد ${memory.days} يوم من البداية`;
             $('anniversary-progress').innerHTML = anniversaryMemories.map((_, i) => `<i class="${i === index ? 'active' : ''}"></i>`).join('');
             frame.classList.remove('reveal'); void frame.offsetWidth; frame.classList.add('reveal');
             anniversaryTimer = setTimeout(() => {
